@@ -14,3 +14,13 @@
                  :reader rule-uri-template
                  :type string))
   (:documentation "A rule for matching and hanlding a HTTP request"))
+
+(defgeneric matchp (request rule)
+  (:documentation "Return true when the request is match with rule, otherwise return false"))
+
+(defmethod matchp ((request eloquent.mvc.request:<request>) (rule <rule>))
+  (let ((request-method (eloquent.mvc.request:request-method request))
+        (request-path-info (eloquent.mvc.request:request-path-info request)))
+    (with-slots (method uri-template) rule
+      (and (eloquent.mvc.prelude:equivalent request-method method)
+           (eloquent.mvc.prelude:equivalent request-path-info uri-template)))))

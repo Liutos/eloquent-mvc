@@ -1,3 +1,5 @@
 (defpackage #:eloquent.mvc.router
   (:use #:cl)
-  (:export #:parse))
+  (:shadow :get)
+  (:export #:get
+           #:parse))
