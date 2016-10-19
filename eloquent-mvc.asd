@@ -2,6 +2,7 @@
   :author "Liutos <mat.liutos@gmail.com>"
   :depends-on (#:alexandria
                #:clack
+               #:py-configparser
                #:split-sequence
                #:trivial-types
                #:uiop)
@@ -14,6 +15,11 @@
                                                            (:file "equivalent")
                                                            (:file "read-file-string")
                                                            (:file "split")))
+                                     (:module "config"
+                                              :serial t
+                                              :components ((:file "package")
+                                                           (:file "config")
+                                                           (:file "parse")))
                                      (:module "request"
                                               :serial t
                                               :components ((:file "package")
