@@ -1,4 +1,5 @@
 (defpackage #:eloquent.mvc.loader
   (:use #:cl)
   (:shadow #:load)
-  (:export #:load))
+  (:export #:load
+           #:unload))

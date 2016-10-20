@@ -23,6 +23,7 @@
                                      (:module "request"
                                               :serial t
                                               :components ((:file "package")
+                                                           (:file "env-to-request")
                                                            (:file "request")))
                                      (:module "router"
                                               :serial t
@@ -38,5 +39,7 @@
                                      (:module "loader"
                                               :serial t
                                               :components ((:file "package")
-                                                           (:file "load")))
+                                                           (:file "server")
+                                                           (:file "load")
+                                                           (:file "unload")))
                                      (:file "package")))))
