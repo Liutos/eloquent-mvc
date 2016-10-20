@@ -1,7 +1,10 @@
 (in-package #:eloquent.mvc.request)
 
 (defclass <request> ()
-  ((content-length :documentation "The Content-Length field in request headers"
+  ((clack.streaming :documentation "Directly from Clack"
+                    :initarg :clack.streaming
+                    :type boolean)
+   (content-length :documentation "The Content-Length field in request headers"
                    :initarg :content-length
                    :reader request-content-length
                    :type fixnum)

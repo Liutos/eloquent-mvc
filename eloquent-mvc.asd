@@ -35,4 +35,8 @@
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "make-handler")))
+                                     (:module "loader"
+                                              :serial t
+                                              :components ((:file "package")
+                                                           (:file "load")))
                                      (:file "package")))))
