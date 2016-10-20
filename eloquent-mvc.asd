@@ -31,4 +31,8 @@
                                                            (:file "router")
                                                            (:file "get")
                                                            (:file "parse")))
+                                     (:module "dispatcher"
+                                              :serial t
+                                              :components ((:file "package")
+                                                           (:file "make-handler")))
                                      (:file "package")))))
