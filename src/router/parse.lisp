@@ -2,13 +2,20 @@
 
 (defun components-to-rules (components)
   (map-components #'(lambda (method uri-template action)
-                      (let ((action (eloquent.mvc.prelude:find-symbol* action))
+                      (let ((action (find-action action))
                             (method (eloquent.mvc.prelude:make-keyword method)))
                         (make-instance '<rule>
                                      :action action
                                      :method method
                                      :uri-template uri-template)))
                   components))
+
+(defun find-action (action)
+  (declare (type string action))
+  (multiple-value-bind (symbol status)
+      (eloquent.mvc.prelude:find-symbol* action)
+    (assert (eq status :external))
+    symbol))
 
 (defun map-components (function components)
   (let ((result '()))
