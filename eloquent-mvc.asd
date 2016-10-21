@@ -13,6 +13,7 @@
                                               :components ((:file "package")
                                                            (:file "dolist")
                                                            (:file "equivalent")
+                                                           (:file "make-keyword")
                                                            (:file "read-file-string")
                                                            (:file "split")))
                                      (:module "config"

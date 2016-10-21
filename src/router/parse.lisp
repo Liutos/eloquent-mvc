@@ -2,10 +2,11 @@
 
 (defun components-to-rules (components)
   (map-components #'(lambda (method uri-template action)
-                      (make-instance '<rule>
+                      (let ((method (eloquent.mvc.prelude:make-keyword method)))
+                        (make-instance '<rule>
                                      :action action
                                      :method method
-                                     :uri-template uri-template))
+                                     :uri-template uri-template)))
                   components))
 
 (defun map-components (function components)

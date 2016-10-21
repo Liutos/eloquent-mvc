@@ -3,5 +3,6 @@
   (:shadow #:dolist)
   (:export #:dolist
            #:equivalent
+           #:make-keyword
            #:read-file-string
            #:split))

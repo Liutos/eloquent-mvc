@@ -8,7 +8,7 @@
    (method :documentation "HTTP method supported by the action in this rule"
            :initarg :method
            :reader rule-method
-           :type string)
+           :type keyword)
    (uri-template :documentation "URI template of paths handled by the action in this rule"
                  :initarg :uri-template
                  :reader rule-uri-template
@@ -22,5 +22,8 @@
   (let ((request-method (eloquent.mvc.request:request-method request))
         (request-path-info (eloquent.mvc.request:request-path-info request)))
     (with-slots (method uri-template) rule
-      (and (eloquent.mvc.prelude:equivalent request-method method)
+      (and (method= request-method method)
            (eloquent.mvc.prelude:equivalent request-path-info uri-template)))))
+
+(defun method= (request-method rule-method)
+  (eq request-method rule-method))
