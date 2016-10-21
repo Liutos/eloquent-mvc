@@ -17,7 +17,8 @@
                                                            (:file "find-symbol")
                                                            (:file "make-keyword")
                                                            (:file "read-file-string")
-                                                           (:file "split")))
+                                                           (:file "split")
+                                                           (:file "string-to-alist")))
                                      (:module "config"
                                               :serial t
                                               :components ((:file "package")
