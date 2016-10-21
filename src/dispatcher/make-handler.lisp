@@ -1,12 +1,7 @@
 (in-package #:eloquent.mvc.dispatcher)
 
 (defun call-action (action env)
-  (declare (type string action))
-  (destructuring-bind (package-name symbol-name)
-      (eloquent.mvc.prelude:split (string-upcase action) #\:
-                                  :remove-empty-subseqs t)
-    (let ((package (find-package package-name)))
-      (uiop:symbol-call package symbol-name env))))
+  (funcall (symbol-function action) env))
 
 (defun make-handler (router)
   (lambda (env)

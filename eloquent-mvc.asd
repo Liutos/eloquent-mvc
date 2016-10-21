@@ -2,6 +2,7 @@
   :author "Liutos <mat.liutos@gmail.com>"
   :depends-on (#:alexandria
                #:clack
+               #:optima
                #:py-configparser
                #:split-sequence
                #:trivial-types
@@ -13,6 +14,7 @@
                                               :components ((:file "package")
                                                            (:file "dolist")
                                                            (:file "equivalent")
+                                                           (:file "find-symbol")
                                                            (:file "make-keyword")
                                                            (:file "read-file-string")
                                                            (:file "split")))

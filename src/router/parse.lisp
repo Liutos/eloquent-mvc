@@ -2,7 +2,8 @@
 
 (defun components-to-rules (components)
   (map-components #'(lambda (method uri-template action)
-                      (let ((method (eloquent.mvc.prelude:make-keyword method)))
+                      (let ((action (eloquent.mvc.prelude:find-symbol* action))
+                            (method (eloquent.mvc.prelude:make-keyword method)))
                         (make-instance '<rule>
                                      :action action
                                      :method method
