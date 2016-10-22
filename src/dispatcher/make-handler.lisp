@@ -7,4 +7,4 @@
   (lambda (env)
     (let* ((request (eloquent.mvc.request:env-to-request env))
            (action (eloquent.mvc.router:get router request)))
-      (call-action action env))))
+      (call-action action request))))

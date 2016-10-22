@@ -46,4 +46,8 @@
                                                            (:file "server")
                                                            (:file "load")
                                                            (:file "unload")))
+                                     (:module "controller"
+                                              :serial t
+                                              :components ((:file "package")
+                                                           (:file "query-string-bind")))
                                      (:file "package")))))

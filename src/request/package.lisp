@@ -3,4 +3,5 @@
   (:export #:<request>
            #:env-to-request
            #:request-method
-           #:request-path-info))
+           #:request-path-info
+           #:request-query-string))
