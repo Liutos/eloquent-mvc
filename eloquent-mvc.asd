@@ -18,7 +18,8 @@
                                                            (:file "make-keyword")
                                                            (:file "read-file-string")
                                                            (:file "split")
-                                                           (:file "string-to-alist")))
+                                                           (:file "string-to-alist")
+                                                           (:file "read-lines")))
                                      (:module "config"
                                               :serial t
                                               :components ((:file "package")
@@ -40,6 +41,10 @@
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "make-handler")))
+                                     (:module "middleware"
+                                              :serial t
+                                              :components ((:file "package")
+                                                           (:file "parse")))
                                      (:module "loader"
                                               :serial t
                                               :components ((:file "package")

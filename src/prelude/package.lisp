@@ -6,5 +6,6 @@
            #:find-symbol*
            #:make-keyword
            #:read-file-string
+           #:read-lines
            #:split
            #:string-to-alist))
