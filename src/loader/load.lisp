@@ -11,4 +11,4 @@
         (router-path (make-router-path directory)))
     (let ((config (eloquent.mvc.config:parse config-path))
           (router (eloquent.mvc.router:parse router-path)))
-      (start-server config router))))
+      (start-server config (eloquent.mvc.dispatcher:make-handler router)))))

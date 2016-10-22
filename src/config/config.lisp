@@ -6,3 +6,8 @@
             :reader config-content
             :type py-configparser:config))
   (:documentation "Configurations for the eloquent-mvc project"))
+
+(defun get-server-port (config)
+  (declare (type <config> config))
+  (with-slots (content) config
+    (parse-integer (py-configparser:get-option content "server" "port"))))

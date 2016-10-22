@@ -1,3 +1,4 @@
 (defpackage #:eloquent.mvc.config
   (:use #:cl)
-  (:export #:parse))
+  (:export #:get-server-port
+           #:parse))
