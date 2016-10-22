@@ -1,3 +1,4 @@
 (defpackage #:eloquent.mvc.middleware
   (:use #:cl)
-  (:export #:parse))
+  (:export #:access-log
+           #:parse))

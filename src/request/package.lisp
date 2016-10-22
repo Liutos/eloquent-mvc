@@ -2,6 +2,11 @@
   (:use :cl)
   (:export #:<request>
            #:env-to-request
+           #:get-header
            #:request-method
            #:request-path-info
-           #:request-query-string))
+           #:request-query-string
+           #:request-remote-addr
+           #:request-server-protocol
+           #:request-uri
+           #:request-url-scheme))

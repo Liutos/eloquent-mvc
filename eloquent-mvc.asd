@@ -2,6 +2,7 @@
   :author "Liutos <mat.liutos@gmail.com>"
   :depends-on (#:alexandria
                #:clack
+               #:local-time
                #:optima
                #:py-configparser
                #:split-sequence
@@ -44,6 +45,7 @@
                                      (:module "middleware"
                                               :serial t
                                               :components ((:file "package")
+                                                           (:file "access-log")
                                                            (:file "parse")))
                                      (:module "loader"
                                               :serial t
