@@ -23,7 +23,14 @@
         (request-path-info (eloquent.mvc.request:request-path-info request)))
     (with-slots (method uri-template) rule
       (and (method= request-method method)
-           (eloquent.mvc.prelude:equivalent request-path-info uri-template)))))
+           (path-info= request-path-info uri-template)))))
 
 (defun method= (request-method rule-method)
   (eq request-method rule-method))
+
+(defun path-info= (request-path-info uri-template)
+  (declare (type string request-path-info uri-template))
+  (let ((uri-template (cl-ppcre:parse-string uri-template)))
+    (etypecase uri-template
+      (list (cl-ppcre:scan uri-template request-path-info))
+      (string (eloquent.mvc.prelude:equivalent request-path-info uri-template)))))

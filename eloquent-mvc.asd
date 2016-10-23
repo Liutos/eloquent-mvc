@@ -1,6 +1,7 @@
 (asdf:defsystem #:eloquent-mvc
   :author "Liutos <mat.liutos@gmail.com>"
   :depends-on (#:alexandria
+               #:cl-ppcre
                #:clack
                #:local-time
                #:optima
