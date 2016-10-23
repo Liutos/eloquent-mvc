@@ -9,9 +9,9 @@
 (defun access-log (request next)
   (let* ((moment (get-universal-time))
          (response (funcall next request))
-         (body (first (third response)))
+         (body (eloquent.mvc.response:response-body response))
          (bytes-sent (length body))
-         (status (first response)))
+         (status (eloquent.mvc.response:response-status response)))
     (format t "~A - - [~A] \"~A ~A ~A\" ~D ~D \"-\" \"~A\""
             (eloquent.mvc.request:request-remote-addr request)
             (make-time-local moment)

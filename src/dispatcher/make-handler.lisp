@@ -29,4 +29,5 @@
          (middleware-caller (make-middleware-caller middlewares action-caller)))
     (lambda (env)
       (let ((request (eloquent.mvc.request:env-to-request env)))
-        (funcall middleware-caller request)))))
+        (eloquent.mvc.response:response-to-list
+         (funcall middleware-caller request))))))
