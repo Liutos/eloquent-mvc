@@ -32,6 +32,7 @@
                                               :components ((:file "package")
                                                            (:file "env-to-request")
                                                            (:file "get-header")
+                                                           (:file "http-request")
                                                            (:file "request")))
                                      (:module "response"
                                               :serial t
