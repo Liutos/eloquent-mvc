@@ -3,6 +3,9 @@
 (defun response-to-list (response)
   (declare (type <response> response))
   (with-slots (body headers status) response
-    `(,status
-      ,headers
-      (,body))))
+    (let ((body (if (stringp body)
+                    (list body)
+                    body)))
+      `(,status
+        ,headers
+        ,body))))

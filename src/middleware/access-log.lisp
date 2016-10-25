@@ -6,11 +6,10 @@
    (local-time:universal-to-timestamp moment)
    :format '(:day "/" :short-month "/" :year ":" :hour ":" :min ":" :sec " " :gmt-offset-hhmm)))
 
-(defun access-log (request next)
+(defun access-log (request next &key)
   (let* ((moment (get-universal-time))
          (response (funcall next request))
-         (body (eloquent.mvc.response:response-body response))
-         (bytes-sent (length body))
+         (bytes-sent (eloquent.mvc.response:response-bytes-sent response))
          (status (eloquent.mvc.response:response-status response)))
     (format t "~A - - [~A] \"~A ~A ~A\" ~D ~D \"-\" \"~A\""
             (eloquent.mvc.request:request-remote-addr request)

@@ -7,7 +7,14 @@
             :type py-configparser:config))
   (:documentation "Configurations for the eloquent-mvc project"))
 
-(defun get-server-port (config)
+(defun get (config section-name option-name)
+  (declare (type string option-name section-name))
   (declare (type <config> config))
   (with-slots (content) config
-    (parse-integer (py-configparser:get-option content "server" "port"))))
+    (py-configparser:get-option content section-name option-name)))
+
+(defun get-application-root (config)
+  (get config "application" "root"))
+
+(defun get-server-port (config)
+  (parse-integer (get config "server" "port")))
