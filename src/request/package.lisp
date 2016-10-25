@@ -3,6 +3,7 @@
   (:export #:<request>
            #:env-to-request
            #:get-header
+           #:getextra
            #:request-method
            #:request-path-info
            #:request-query-string
