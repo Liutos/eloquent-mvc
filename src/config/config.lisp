@@ -19,5 +19,8 @@
 (defun get-application-root (config)
   (get config "application" "root"))
 
+(defun get-log-directory (config)
+  (get config "log" "directory"))
+
 (defun get-server-port (config)
   (get config "server" "port"))

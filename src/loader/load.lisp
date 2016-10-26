@@ -16,4 +16,5 @@
     (let ((config (eloquent.mvc.config:parse config-path))
           (middlewares (eloquent.mvc.middleware:parse middlewares-path))
           (router (eloquent.mvc.router:parse router-path)))
-      (start-server config (eloquent.mvc.dispatcher:make-handler config middlewares router)))))
+      (let ((eloquent.mvc.logger:*log* (eloquent.mvc.logger:init config)))
+        (start-server config (eloquent.mvc.dispatcher:make-handler config middlewares router))))))

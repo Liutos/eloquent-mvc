@@ -41,6 +41,12 @@
                                                            (:file "response")
                                                            (:file "response-to-list")
                                                            (:file "respond")))
+                                     (:module "logger"
+                                              :serial t
+                                              :components ((:file "package")
+                                                           (:file "log")
+                                                           (:file "init")
+                                                           (:file "format")))
                                      (:module "router"
                                               :serial t
                                               :components ((:file "package")
