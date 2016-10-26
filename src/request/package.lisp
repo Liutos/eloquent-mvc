@@ -9,5 +9,6 @@
            #:request-query-string
            #:request-remote-addr
            #:request-server-protocol
+           #:request-string-body
            #:request-uri
            #:request-url-scheme))
