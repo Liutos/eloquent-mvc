@@ -2,4 +2,5 @@
   (:use #:cl)
   (:export #:access-log
            #:parse
+           #:parse-body
            #:static-file))

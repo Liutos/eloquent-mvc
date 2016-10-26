@@ -4,6 +4,7 @@
            #:env-to-request
            #:get-header
            #:getextra
+           #:request-content-type
            #:request-method
            #:request-path-info
            #:request-query-string

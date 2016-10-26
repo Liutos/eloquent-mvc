@@ -1,6 +1,7 @@
 (asdf:defsystem #:eloquent-mvc
   :author "Liutos <mat.liutos@gmail.com>"
   :depends-on (#:alexandria
+               #:cl-json
                #:cl-ppcre
                #:cl-yaml
                #:clack
@@ -64,6 +65,7 @@
                                               :components ((:file "package")
                                                            (:file "access-log")
                                                            (:file "parse")
+                                                           (:file "parse-body")
                                                            (:file "static-file")))
                                      (:module "loader"
                                               :serial t
