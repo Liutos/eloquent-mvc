@@ -3,6 +3,7 @@
   :depends-on (#:alexandria
                #:cl-ppcre
                #:clack
+               #:flexi-streams
                #:local-time
                #:optima
                #:py-configparser
@@ -55,7 +56,8 @@
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "access-log")
-                                                           (:file "parse")))
+                                                           (:file "parse")
+                                                           (:file "static-file")))
                                      (:module "loader"
                                               :serial t
                                               :components ((:file "package")

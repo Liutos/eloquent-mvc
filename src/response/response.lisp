@@ -9,7 +9,7 @@
    (headers :documentation "The list of responding HTTP headers"
             :initarg :headers
             :reader response-headers
-            :type (trivial-types:association-list))
+            :type (trivial-types:proper-list (trivial-types:tuple keyword t)))
    (status :documentation "The HTTP status code"
            :initarg :status
            :reader response-status
@@ -18,11 +18,12 @@
 
 (defmethod initialize-instance :after ((instance <response>) &rest initargs)
   (declare (ignore initargs))
-  (with-slots (body) instance
+  (with-slots (body bytes-sent) instance
     (cond ((stringp body)
-           (setf (slot-value instance 'bytes-sent) (length body)))
+           (setf bytes-sent (flexi-streams:octet-length body
+                                                        :external-format :utf-8)))
           ((pathname body)
-           (setf (slot-value instance 'bytes-sent)
+           (setf bytes-sent
                  (with-open-file (stream body
                                          :element-type '(unsigned-byte 8))
                    (file-length stream)))))))
