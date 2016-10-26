@@ -1,7 +1,7 @@
 (in-package #:eloquent.mvc.config)
 
 (defun parse (filename)
-  (let ((content (py-configparser:make-config)))
-    (py-configparser:read-files content (list filename))
+  (declare (type pathname filename))
+  (let ((content (cl-yaml:parse filename)))
     (make-instance '<config>
                    :content content)))

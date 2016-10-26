@@ -2,11 +2,11 @@
   :author "Liutos <mat.liutos@gmail.com>"
   :depends-on (#:alexandria
                #:cl-ppcre
+               #:cl-yaml
                #:clack
                #:flexi-streams
                #:local-time
                #:optima
-               #:py-configparser
                #:split-sequence
                #:trivial-types
                #:uiop)

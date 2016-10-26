@@ -1,7 +1,7 @@
 (in-package #:eloquent.mvc.loader)
 
 (defun make-config-path (directory)
-  (merge-pathnames "config/eloquent-mvc.ini" directory))
+  (merge-pathnames "config/eloquent-mvc.yaml" directory))
 
 (defun make-middleware-path (directory)
   (merge-pathnames "config/middlewares" directory))
