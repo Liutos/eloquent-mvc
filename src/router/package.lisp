@@ -2,4 +2,5 @@
   (:use #:cl)
   (:shadow :get)
   (:export #:get
+           #:not-found
            #:parse))

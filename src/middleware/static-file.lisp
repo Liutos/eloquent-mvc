@@ -1,10 +1,9 @@
 (in-package #:eloquent.mvc.middleware)
 
-(defun feed-static-file (path-info prefix root)
+(defun make-static-file (path-info prefix root)
   (let ((path (remove-prefix prefix path-info)))
-    (eloquent.mvc.response:respond
-     (merge-pathnames path
-                      (merge-pathnames "static/" root)))))
+    (merge-pathnames path
+                     (merge-pathnames "static/" root))))
 
 (defun get-prefix (config)
   (eloquent.mvc.config:get config "static-file" "prefix"))
@@ -18,5 +17,8 @@
         (prefix (get-prefix config))
         (root (eloquent.mvc.config:get-application-root config)))
     (if (alexandria:starts-with-subseq prefix path-info)
-        (feed-static-file path-info prefix root)
+        (let ((filespec (make-static-file path-info prefix root)))
+          (if (probe-file filespec)
+              (eloquent.mvc.response:respond filespec)
+              (eloquent.mvc.router:not-found request)))
         (funcall next request))))
