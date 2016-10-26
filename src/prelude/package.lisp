@@ -8,4 +8,5 @@
            #:read-file-string
            #:read-lines
            #:split
-           #:string-to-alist))
+           #:string-to-alist
+           #:urldecode))

@@ -4,6 +4,7 @@
                #:cl-ppcre
                #:cl-yaml
                #:clack
+               #:do-urlencode
                #:flexi-streams
                #:local-time
                #:optima

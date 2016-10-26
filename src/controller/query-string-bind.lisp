@@ -7,10 +7,11 @@
         (eloquent.mvc.prelude:string-to-alist query-string #\& #\=))))
 
 (defmacro query-string-bind (bindings request &body body)
-  (alexandria:with-gensyms (alist)
+  (alexandria:with-gensyms (alist val)
     (let ((bindings (mapcar #'(lambda (binding)
                                 (destructuring-bind (var field) binding
-                                  `(,var (cdr (assoc ,field ,alist :test #'string=)))))
+                                  `(,var (let ((,val (cdr (assoc ,field ,alist :test #'string=))))
+                                           (and ,val (eloquent.mvc.prelude:urldecode ,val))))))
                             bindings)))
       `(let* ((,alist (parse-query-string ,request))
               ,@bindings)
