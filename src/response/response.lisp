@@ -22,8 +22,10 @@
     (cond ((stringp body)
            (setf bytes-sent (flexi-streams:octet-length body
                                                         :external-format :utf-8)))
-          ((pathname body)
+          ((pathnamep body)
            (setf bytes-sent
                  (with-open-file (stream body
                                          :element-type '(unsigned-byte 8))
-                   (file-length stream)))))))
+                   (file-length stream))))
+          ((null body)
+           (setf bytes-sent 0)))))

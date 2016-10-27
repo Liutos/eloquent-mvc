@@ -76,5 +76,6 @@
                                      (:module "controller"
                                               :serial t
                                               :components ((:file "package")
+                                                           (:file "json-body-bind")
                                                            (:file "query-string-bind")))
                                      (:file "package")))))
