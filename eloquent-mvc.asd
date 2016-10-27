@@ -9,6 +9,7 @@
                #:flexi-streams
                #:local-time
                #:optima
+               #:salza2
                #:split-sequence
                #:trivial-types
                #:uiop)
@@ -66,6 +67,7 @@
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "access-log")
+                                                           (:file "compress")
                                                            (:file "parse")
                                                            (:file "parse-body")
                                                            (:file "static-file")))
@@ -79,5 +81,6 @@
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "json-body-bind")
-                                                           (:file "query-string-bind")))
+                                                           (:file "query-string-bind")
+                                                           (:file "url-bind")))
                                      (:file "package")))))

@@ -3,12 +3,13 @@
 (defclass <response> ()
   ((body :documentation "The HTTP body"
          :initarg :body
-         :reader response-body)
+         :accessor response-body)
    (bytes-sent :documentation "The number of bytes send back to client"
-               :reader response-bytes-sent)
+               :reader response-bytes-sent
+               :type fixnum)
    (headers :documentation "The list of responding HTTP headers"
             :initarg :headers
-            :reader response-headers
+            :accessor response-headers
             :type (trivial-types:proper-list (trivial-types:tuple keyword t)))
    (status :documentation "The HTTP status code"
            :initarg :status
@@ -29,3 +30,6 @@
                    (file-length stream))))
           ((null body)
            (setf bytes-sent 0)))))
+
+(defmethod (setf response-body) :after ((body sequence) (object <response>))
+  (setf (slot-value object 'bytes-sent) (length body)))
