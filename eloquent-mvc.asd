@@ -24,7 +24,9 @@
                                                            (:file "read-file-string")
                                                            (:file "split")
                                                            (:file "string-to-alist")
-                                                           (:file "read-lines")))
+                                                           (:file "read-lines")
+                                                           (:file "urldecode")
+                                                           (:file "parse-query-string")))
                                      (:module "config"
                                               :serial t
                                               :components ((:file "package")

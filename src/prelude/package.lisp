@@ -5,6 +5,7 @@
            #:equivalent
            #:find-symbol*
            #:make-keyword
+           #:parse-query-string
            #:read-file-string
            #:read-lines
            #:split
