@@ -3,6 +3,7 @@
   (:export #:<response>
            #:override-header
            #:respond
+           #:respond-json
            #:response-body
            #:response-bytes-sent
            #:response-headers

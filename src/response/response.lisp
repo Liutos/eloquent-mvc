@@ -33,3 +33,9 @@
 
 (defmethod (setf response-body) :after ((body sequence) (object <response>))
   (setf (slot-value object 'bytes-sent) (length body)))
+
+(defun override-header (headers field value)
+  (declare (type (trivial-types:property-list) headers))
+  (declare (type keyword field))
+  (let ((filtered (alexandria:remove-from-plist headers field)))
+    (cons field (cons value filtered))))
