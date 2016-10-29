@@ -9,5 +9,6 @@
            #:read-file-string
            #:read-lines
            #:split
+           #:string-assoc
            #:string-to-alist
            #:urldecode))

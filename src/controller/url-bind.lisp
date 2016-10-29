@@ -2,10 +2,10 @@
 
 (defun parse-uri-template (uri-template)
   (declare (type string uri-template))
-  (let ((regex (cl-ppcre:regex-replace ":\\w+" uri-template "([^/]+)"))
+  (let ((regex (cl-ppcre:regex-replace ":[\\w\\-]+" uri-template "([^/]+)"))
         (vars (mapcar #'(lambda (var)
                           (intern (string-upcase (subseq var 1)) *package*))
-                      (cl-ppcre:all-matches-as-strings ":\\w+" uri-template))))
+                      (cl-ppcre:all-matches-as-strings ":[\\w\\-]+" uri-template))))
     (values vars regex)))
 
 (defmacro url-bind (uri-template request &body body)
