@@ -32,6 +32,7 @@
   (declare (type string request-path-info uri-template))
   (let ((uri-template (cl-ppcre:parse-string uri-template)))
     (etypecase uri-template
+      (character (string= request-path-info (string uri-template)))
       (list (cl-ppcre:scan uri-template request-path-info))
       (string (or (string= request-path-info uri-template)
                   (and (slash-path-p request-path-info)
