@@ -76,8 +76,7 @@
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "server")
-                                                           (:file "load")
-                                                           (:file "unload")))
+                                                           (:file "load")))
                                      (:module "controller"
                                               :serial t
                                               :components ((:file "package")
