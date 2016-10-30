@@ -9,6 +9,7 @@
                #:flexi-streams
                #:local-time
                #:optima
+               #:quickproject
                #:salza2
                #:split-sequence
                #:trivial-types
@@ -83,4 +84,8 @@
                                                            (:file "json-body-bind")
                                                            (:file "query-string-bind")
                                                            (:file "url-bind")))
+                                     (:module "project"
+                                              :serial t
+                                              :components ((:file "package")
+                                                           (:file "index")))
                                      (:file "package")))))

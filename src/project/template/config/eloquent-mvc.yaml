@@ -1,0 +1,8 @@
+application:
+  root: 
+log:
+  directory: 
+server:
+  port: 
+static-file:
+  prefix: 
