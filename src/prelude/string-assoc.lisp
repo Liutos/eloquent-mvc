@@ -13,5 +13,6 @@
     (push #'string= args)
     (push :test args))
   (let ((val (apply #'assoc item alist :allow-other-keys t args)))
-    (when (and after val)
-      (funcall after val))))
+    (if (and after val)
+        (funcall after val)
+        val)))

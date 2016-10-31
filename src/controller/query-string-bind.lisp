@@ -9,7 +9,8 @@
                                           `(let ((,val ,expr))
                                              (and ,val (parse-integer ,val))))))))
                (when default
-                 (setf expr `(or ,expr ,default))))
+                 (setf expr `(or ,expr ,default)))
+               expr)
              (make-binding (binding)
                (destructuring-bind (var field &rest args) binding
                  `(,var ,(apply #'wrap-value

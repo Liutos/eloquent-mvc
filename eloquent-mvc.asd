@@ -28,7 +28,8 @@
                                                            (:file "string-to-alist")
                                                            (:file "read-lines")
                                                            (:file "urldecode")
-                                                           (:file "parse-query-string")))
+                                                           (:file "parse-query-string")
+                                                           (:file "string-assoc")))
                                      (:module "config"
                                               :serial t
                                               :components ((:file "package")
