@@ -10,7 +10,7 @@
   (merge-pathnames "config/middlewares" directory))
 
 (defun make-router-path (directory)
-  (merge-pathnames "config/router" directory))
+  (merge-pathnames "config/router.lisp" directory))
 
 ;;; EXPORT
 
