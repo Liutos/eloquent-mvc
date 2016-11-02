@@ -59,8 +59,7 @@
                                               :components ((:file "package")
                                                            (:file "rule")
                                                            (:file "router")
-                                                           (:file "get")
-                                                           (:file "parse")))
+                                                           (:file "index")))
                                      (:module "dispatcher"
                                               :serial t
                                               :components ((:file "package")

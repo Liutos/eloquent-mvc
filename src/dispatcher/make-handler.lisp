@@ -5,9 +5,9 @@
   (declare (type eloquent.mvc.request:<request> request))
   (funcall (symbol-function action) request))
 
-(defun make-action-caller (router)
+(defun make-action-caller ()
   (lambda (request)
-    (let ((action (eloquent.mvc.router:get router request)))
+    (let ((action (eloquent.mvc.router:get request)))
       (call-action action request))))
 
 (defun make-middleware-caller (config middlewares action-caller)
@@ -25,8 +25,8 @@
             :from-end t
             :initial-value action-caller)))
 
-(defun make-handler (config middlewares router)
-  (let* ((action-caller (make-action-caller router))
+(defun make-handler (config middlewares)
+  (let* ((action-caller (make-action-caller))
          (middleware-caller (make-middleware-caller config middlewares action-caller)))
     (lambda (env)
       (let ((request (eloquent.mvc.request:env-to-request env)))
