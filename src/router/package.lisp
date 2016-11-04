@@ -3,4 +3,5 @@
   (:shadow :get)
   (:export #:get
            #:init
-           #:not-found))
+           #:not-found
+           #:path-info=))

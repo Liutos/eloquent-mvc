@@ -9,6 +9,10 @@
            :initarg :method
            :reader rule-method
            :type keyword)
+   (mode :documentation "A mode instructs how to compare a path-info and a uri-template"
+         :initarg :mode
+         :reader rule-mode
+         :type keyword)
    (uri-template :documentation "URI template of paths handled by the action in this rule"
                  :initarg :uri-template
                  :reader rule-uri-template
@@ -17,28 +21,50 @@
 
 (defgeneric matchp (request rule)
   (:documentation "Return true when the request is match with rule, otherwise return false"))
+(defgeneric path-info= (mode path-info uri-template)
+  (:documentation "Return true when PATH-INFO is match against URI-TEMPLATE according to MODE."))
 
 (defmethod matchp ((request eloquent.mvc.request:<request>) (rule <rule>))
   (let ((request-method (eloquent.mvc.request:request-method request))
         (request-path-info (eloquent.mvc.request:request-path-info request)))
-    (with-slots (method uri-template) rule
+    (with-slots (method mode uri-template) rule
       (and (method= request-method method)
-           (path-info= request-path-info uri-template)))))
+           (path-info= mode request-path-info uri-template)))))
+
+(defmethod path-info= ((mode (eql :normal)) (path-info string) (uri-template string))
+  "Return true when PATH-INFO is the same as URI-TEMPLATE except the last slash."
+  (or (string= path-info uri-template)
+      (and (slash-path-p path-info)
+           (string=-but-last uri-template path-info))
+      (and (slash-path-p uri-template)
+           (string=-but-last path-info uri-template))))
+
+(defmethod path-info= ((mode (eql :strict)) (path-info string) (uri-template string))
+  "Return true when PATH-INFO is the same as URI-TEMPLATE."
+  (string= path-info uri-template))
+
+(defmethod path-info= ((mode (eql :regexp)) (path-info string) (uri-template string))
+  "Return true when regular expression URI-TEMPLATE matches the PATH-INFO."
+  (not (null (cl-ppcre:scan uri-template path-info))))
+
+(defun make-rule (method uri-template action)
+  "Create and return a new router rule."
+  (check-type method keyword)
+  (check-type uri-template (or list string))
+  (check-type action symbol)
+  (when (stringp uri-template)
+    (setf uri-template (list :normal uri-template)))
+  (destructuring-bind (mode uri-template) uri-template
+    (check-type mode keyword)
+    (check-type uri-template string)
+    (make-instance '<rule>
+                   :action action
+                   :method method
+                   :mode mode
+                   :uri-template uri-template)))
 
 (defun method= (request-method rule-method)
   (eq request-method rule-method))
-
-(defun path-info= (request-path-info uri-template)
-  (declare (type string request-path-info uri-template))
-  (let ((uri-template (cl-ppcre:parse-string uri-template)))
-    (etypecase uri-template
-      (character (string= request-path-info (string uri-template)))
-      (list (cl-ppcre:scan uri-template request-path-info))
-      (string (or (string= request-path-info uri-template)
-                  (and (slash-path-p request-path-info)
-                       (string=-but-last uri-template request-path-info))
-                  (and (slash-path-p uri-template)
-                       (string=-but-last request-path-info uri-template)))))))
 
 (defun slash-path-p (p)
   (alexandria:ends-with #\/ p))

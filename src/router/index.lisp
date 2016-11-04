@@ -3,12 +3,7 @@
 (defvar *router* nil)
 
 (defun components-to-rules (components)
-  (flet ((aux (method uri-template action)
-           (make-instance '<rule>
-                          :action action
-                          :method method
-                          :uri-template uri-template)))
-    (map-components #'aux components)))
+  (map-components #'make-rule components))
 
 (defun find-rule (router request)
   (with-slots (rules) router

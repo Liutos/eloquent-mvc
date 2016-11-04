@@ -29,7 +29,9 @@
                                          :element-type '(unsigned-byte 8))
                    (file-length stream))))
           ((null body)
-           (setf bytes-sent 0)))))
+           (setf bytes-sent 0))
+          ((vectorp body)
+           (setf bytes-sent (length body))))))
 
 (defmethod (setf response-body) :after ((body sequence) (object <response>))
   (setf (slot-value object 'bytes-sent) (length body)))
