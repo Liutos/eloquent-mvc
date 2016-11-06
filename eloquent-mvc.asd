@@ -69,6 +69,7 @@
                                               :components ((:file "package")
                                                            (:file "access-log")
                                                            (:file "compress")
+                                                           (:file "handle-error")
                                                            (:file "parse")
                                                            (:file "parse-body")
                                                            (:file "static-file")))

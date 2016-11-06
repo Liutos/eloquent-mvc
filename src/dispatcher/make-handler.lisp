@@ -1,20 +1,9 @@
 (in-package #:eloquent.mvc.dispatcher)
 
-(defmacro with-handler (&body body)
-  "Execute BODY and handle the errors it signaled if neccessary."
-  `(call-with-handler #'(lambda () ,@body)))
-
 (defun call-action (action request)
   (declare (type symbol action))
   (declare (type eloquent.mvc.request:<request> request))
   (funcall (symbol-function action) request))
-
-(defun call-with-handler (procedure)
-  (handler-case (funcall procedure)
-    (error ()
-      (eloquent.mvc.response:respond
-       ""
-       :status 500))))
 
 (defun make-action-caller ()
   (lambda (request)
@@ -44,5 +33,4 @@
     (lambda (env)
       (let ((request (eloquent.mvc.request:env-to-request env)))
         (eloquent.mvc.response:response-to-list
-         (with-handler
-           (funcall middleware-caller request)))))))
+         (funcall middleware-caller request))))))
