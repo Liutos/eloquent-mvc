@@ -33,8 +33,14 @@
                    :rules rules)))
 
 (defun read-file-components (file)
-  (with-open-file (stream file)
-    (read stream)))
+  (let ((*readtable* (copy-readtable *readtable*)))
+    (set-dispatch-macro-character #\# #\/ #'sharp-/ *readtable*)
+    (with-open-file (stream file)
+      (read stream))))
+
+(defun sharp-/ (s c n)
+  (declare (ignorable c n))
+  (list :regexp (read s t (values) t)))
 
 ;;; EXPORT
 
