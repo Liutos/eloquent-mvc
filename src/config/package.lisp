@@ -6,4 +6,5 @@
            #:get-application-root
            #:get-log-directory
            #:get-server-port
+           #:get-server-server
            #:parse))

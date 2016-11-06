@@ -7,6 +7,14 @@
             :type hash-table))
   (:documentation "Configurations for the eloquent-mvc project"))
 
+(define-condition invalid-config-error (error)
+  ((path
+    :documentation "The OGNL path to retrive the configuration value"
+    :initarg :path)
+   (value
+    :documentation "The value which is invalid"
+    :initarg :value)))
+
 (defun get (config section-name option-name)
   (declare (type string option-name section-name))
   (declare (type <config> config))
@@ -16,6 +24,8 @@
       (when found
         (gethash option-name section)))))
 
+;;; EXPORT
+
 (defun get-application-root (config)
   (get config "application" "root"))
 
@@ -24,3 +34,15 @@
 
 (defun get-server-port (config)
   (get config "server" "port"))
+
+(defun get-server-server (config)
+  "Return the name of the server to be started by CLACK:CLACKUP."
+  (check-type config eloquent.mvc.config:<config>)
+  (let ((server (get config "server" "server"))
+        (valid-servers '(:fcgi :hunchentoot :toot :woo :wookie)))
+    (unless (member server valid-servers :test #'string-equal)
+      (error 'invalid-config-error
+             :path "server.server"
+             :value server))
+    (alexandria:make-keyword
+     (string-upcase server))))
