@@ -12,6 +12,7 @@
                #:quickproject
                #:salza2
                #:split-sequence
+               #:trivial-backtrace
                #:trivial-types
                #:uiop)
   :components ((:module "src"
