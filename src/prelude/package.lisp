@@ -2,7 +2,6 @@
   (:use #:cl)
   (:shadow #:dolist)
   (:export #:dolist
-           #:equivalent
            #:find-symbol*
            #:make-keyword
            #:parse-query-string

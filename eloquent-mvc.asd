@@ -21,7 +21,6 @@
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "dolist")
-                                                           (:file "equivalent")
                                                            (:file "find-symbol")
                                                            (:file "make-keyword")
                                                            (:file "read-file-string")
