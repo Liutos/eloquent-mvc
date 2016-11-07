@@ -1,6 +1,7 @@
 (in-package #:eloquent.mvc.controller)
 
 (defmacro query-string-bind (bindings request &body body)
+  "Bind values extract from query string of REQUEST to variables declared in BINDINGS, and execute BODY in this extended context."
   (alexandria:with-gensyms (alist)
     (labels ((wrap-value (expr &key default type)
                (when type

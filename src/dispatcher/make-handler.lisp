@@ -28,6 +28,7 @@
 ;;; EXPORT
 
 (defun make-handler (config middlewares)
+  "Return a newly created function for handling client request passed from function CLACK:CLACKUP."
   (let* ((action-caller (make-action-caller))
          (middleware-caller (make-middleware-caller config middlewares action-caller)))
     (lambda (env)

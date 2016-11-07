@@ -25,11 +25,13 @@
     string-body))
 
 (defun getextra (key req)
+  "Get the extra information named KEY from REQ."
   (declare (type <request> req))
   (with-slots (extras) req
     (gethash key extras)))
 
 (defun (setf getextra) (value key req)
+  "Set the value of extra information named KEY in REQ, to the value VALUE."
   (declare (type <request> req))
   (with-slots (extras) req
     (setf (gethash key extras) value)))

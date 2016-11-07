@@ -7,6 +7,7 @@
    :format '((:day 2) "/" :short-month "/" (:year 2) ":" (:hour 2) ":" (:min 2) ":" (:sec 2) " " :gmt-offset-hhmm)))
 
 (defun access-log (request next &key)
+  "For every request, print a NGINX-style log message into file named \"access.log\" under log directory."
   (let* ((moment (get-universal-time))
          (response (funcall next request))
          (bytes-sent (eloquent.mvc.response:response-bytes-sent response))

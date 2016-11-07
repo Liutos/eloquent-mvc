@@ -19,6 +19,7 @@
             result))))
 
 (defun not-found (request)
+  "Send a response with HTTP code 404 to client."
   (declare (ignore request))
   (eloquent.mvc.response:respond
    ""
@@ -45,11 +46,13 @@
 ;;; EXPORT
 
 (defun get (request)
+  "Return a symbol indicates the action function for REQUEST."
   (let ((rule (find-rule *router* request)))
     (if rule
         (rule-action rule)
         'not-found)))
 
 (defun init (file)
+  "Parse the router configuration file."
   (setf *router* (parse file))
   (values))

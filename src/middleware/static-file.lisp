@@ -13,6 +13,7 @@
 
 (defun static-file (request next
                     &key config)
+  "When the path-info of REQUEST matches the prefix specified in CONFIG's [static-file] section, feed the client a static file."
   (let ((path-info (eloquent.mvc.request:request-path-info request))
         (prefix (get-prefix config))
         (root (eloquent.mvc.config:get-application-root config)))

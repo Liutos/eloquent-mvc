@@ -37,6 +37,7 @@
   (setf (slot-value object 'bytes-sent) (length body)))
 
 (defun override-header (headers field value)
+  "Return a new plist contains all elements in HEADERS except the FIELD key. The value of FIELD in the newly created plist is replaced by VALUE."
   (declare (type (trivial-types:property-list) headers))
   (declare (type keyword field))
   (let ((filtered (alexandria:remove-from-plist headers field)))

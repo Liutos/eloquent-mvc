@@ -7,5 +7,6 @@
     symbol))
 
 (defun parse (file)
+  "Read the middlewares specified in FILE."
   (let ((lines (eloquent.mvc.prelude:read-lines file)))
     (mapcar #'parse-middleware lines)))

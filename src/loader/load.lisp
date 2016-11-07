@@ -15,6 +15,7 @@
 ;;; EXPORT
 
 (defun load (directory)
+  "Load configuration, router and middlewares under DIRECTORY, and start the server for handling client request."
   (let ((config-path (make-config-path directory))
         (middlewares-path (make-middleware-path directory))
         (router-path (make-router-path directory)))
@@ -27,6 +28,7 @@
             (start-server config (eloquent.mvc.dispatcher:make-handler config middlewares))))))
 
 (defun unload (directory)
+  "Unbind the listen on port and stop the server thread."
   (let ((key (namestring directory)))
     (stop-server (gethash key *apps*))
     (remhash key *apps*)))

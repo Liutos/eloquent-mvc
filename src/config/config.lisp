@@ -16,6 +16,7 @@
     :initarg :value)))
 
 (defun get (config section-name option-name)
+  "Return the raw value belongs to key OPTION-NAME from section SECTION-NAME in CONFIG."
   (declare (type string option-name section-name))
   (declare (type <config> config))
   (with-slots (content) config
@@ -27,12 +28,15 @@
 ;;; EXPORT
 
 (defun get-application-root (config)
+  "Return the project's root directory specified in CONFIG."
   (get config "application" "root"))
 
 (defun get-log-directory (config)
+  "Return the root directory for puting log files, from CONFIG."
   (get config "log" "directory"))
 
 (defun get-server-port (config)
+  "Return the port number to be listened when setting up a server, from CONFIG."
   (get config "server" "port"))
 
 (defun get-server-server (config)
