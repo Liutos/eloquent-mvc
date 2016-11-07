@@ -13,7 +13,11 @@
     :initarg :path)
    (value
     :documentation "The value which is invalid"
-    :initarg :value)))
+    :initarg :value))
+  (:report (lambda (c stream)
+             (with-slots (path value) c
+               (format stream "Invalid value \"~A\" for configuration \"~A\""
+                       value path)))))
 
 (defun get (config section-name option-name)
   "Return the raw value belongs to key OPTION-NAME from section SECTION-NAME in CONFIG."
