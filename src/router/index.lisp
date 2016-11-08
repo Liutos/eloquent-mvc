@@ -48,9 +48,9 @@
 (defun get (request)
   "Return a symbol indicates the action function for REQUEST."
   (let ((rule (find-rule *router* request)))
-    (if rule
-        (rule-action rule)
-        'not-found)))
+    (cond (rule
+           (rule-action rule))
+          (t 'not-found))))
 
 (defun init (file)
   "Parse the router configuration file."
