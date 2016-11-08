@@ -13,7 +13,10 @@
 
 (defun map-components (function components)
   (flet ((aux (component)
-           (apply function component)))
+           (destructuring-bind (method uri-template action &rest args) component
+             (apply function
+                    method uri-template action
+                    :allow-other-keys t args))))
     (mapcar #'aux components)))
 
 (defun not-found (request)

@@ -84,6 +84,7 @@
 
 (defun make-rule (method uri-template action
                   &key
+                    query-string-bind
                     (requestp t))
   "Create and return a new router rule."
   (check-type method keyword)
@@ -98,6 +99,7 @@
     (let ((action (first action))
           (initargs (mapcar #'alexandria:make-keyword (rest action))))
       (setf (cl:get action :initargs) initargs
+            (cl:get action :query-string-bind) query-string-bind
             (cl:get action :requestp) requestp)
       (make-instance '<rule>
                      :action action
