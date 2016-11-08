@@ -12,11 +12,9 @@
              rules)))
 
 (defun map-components (function components)
-  (let ((result '()))
-    (eloquent.mvc.prelude:dolist ((method uri-template action) components
-                                  (nreverse result))
-      (push (funcall function method uri-template action)
-            result))))
+  (flet ((aux (component)
+           (apply function component)))
+    (mapcar #'aux components)))
 
 (defun not-found (request)
   "Send a response with HTTP code 404 to client."

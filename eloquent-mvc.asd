@@ -20,7 +20,6 @@
                         :components ((:module "prelude"
                                               :serial t
                                               :components ((:file "package")
-                                                           (:file "dolist")
                                                            (:file "find-symbol")
                                                            (:file "make-keyword")
                                                            (:file "read-file-string")

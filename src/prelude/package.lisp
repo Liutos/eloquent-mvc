@@ -1,8 +1,6 @@
 (defpackage #:eloquent.mvc.prelude
   (:use #:cl)
-  (:shadow #:dolist)
-  (:export #:dolist
-           #:find-symbol*
+  (:export #:find-symbol*
            #:make-keyword
            #:parse-query-string
            #:read-file-string

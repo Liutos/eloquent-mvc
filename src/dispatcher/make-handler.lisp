@@ -11,13 +11,14 @@ The arguments above will be CONSed and passed to CL:APPLY for invoking."
   (check-type request eloquent.mvc.request:<request>)
   (let ((initargs (get action :initargs))
         (url-params (eloquent.mvc.request:getextra :url-params request)))
-    (let ((url-params (mapcar #'(lambda (k)
+    (let (args
+          (url-params (mapcar #'(lambda (k)
                                   (getf url-params k))
                               initargs)))
-      (let ((args (if initargs
-                      url-params
-                      (list request))))
-        (apply (symbol-function action) args)))))
+      (setf args url-params)
+      (when (get action :requestp)
+        (push request args))
+      (apply (symbol-function action) args))))
 
 (defun make-action-caller ()
   (lambda (request)
