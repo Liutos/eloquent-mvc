@@ -1,9 +1,17 @@
 (in-package #:eloquent.mvc.dispatcher)
 
 (defun call-action (action request)
-  (declare (type symbol action))
-  (declare (type eloquent.mvc.request:<request> request))
-  (funcall (symbol-function action) request))
+  "Process REQUEST by calling ACTION.
+
+The function stored in ACTION will be called by following arguments:
+1. REQUEST. An instance of class ``eloquent.mvc.request:<request>'';
+2. Placeholders extracted from URL by function ELOQUENT.MVC.ROUTER:PATH-INFO=
+The arguments above will be CONSed and passed to CL:APPLY for invoking."
+  (check-type action symbol)
+  (check-type request eloquent.mvc.request:<request>)
+  (let ((url-params (eloquent.mvc.request:getextra :url-params request)))
+    (let ((args (cons request url-params)))
+      (apply (symbol-function action) args))))
 
 (defun make-action-caller ()
   (lambda (request)
