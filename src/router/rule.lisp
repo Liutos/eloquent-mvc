@@ -5,6 +5,11 @@
            :initarg :action
            :reader rule-action
            :type symbol)
+   (initargs
+    :documentation "The arguments to be passed to action handler"
+    :initarg :initargs
+    :reader rule-initargs
+    :type (trivial-types:proper-list keyword))
    (method :documentation "HTTP method supported by the action in this rule"
            :initarg :method
            :reader rule-method
@@ -81,17 +86,22 @@
   "Create and return a new router rule."
   (check-type method keyword)
   (check-type uri-template (or list string))
-  (check-type action symbol)
+  (check-type action (or list symbol))
   (when (stringp uri-template)
     (setf uri-template (list :normal uri-template)))
+  (setf action (alexandria:ensure-list action))
   (destructuring-bind (mode uri-template) uri-template
     (check-type mode keyword)
     (check-type uri-template string)
-    (make-instance '<rule>
-                   :action action
-                   :method method
-                   :mode mode
-                   :uri-template uri-template)))
+    (let ((action (first action))
+          (initargs (mapcar #'alexandria:make-keyword (rest action))))
+      (setf (cl:get action :initargs) initargs)
+      (make-instance '<rule>
+                     :action action
+                     :initargs initargs
+                     :method method
+                     :mode mode
+                     :uri-template uri-template))))
 
 (defun method= (request-method rule-method)
   (eq request-method rule-method))

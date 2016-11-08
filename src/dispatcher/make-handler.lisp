@@ -9,9 +9,15 @@ The function stored in ACTION will be called by following arguments:
 The arguments above will be CONSed and passed to CL:APPLY for invoking."
   (check-type action symbol)
   (check-type request eloquent.mvc.request:<request>)
-  (let ((url-params (eloquent.mvc.request:getextra :url-params request)))
-    (let ((args (cons request url-params)))
-      (apply (symbol-function action) args))))
+  (let ((initargs (get action :initargs))
+        (url-params (eloquent.mvc.request:getextra :url-params request)))
+    (let ((url-params (mapcar #'(lambda (k)
+                                  (getf url-params k))
+                              initargs)))
+      (let ((args (if initargs
+                      url-params
+                      (list request))))
+        (apply (symbol-function action) args)))))
 
 (defun make-action-caller ()
   (lambda (request)
