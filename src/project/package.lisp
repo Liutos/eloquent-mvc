@@ -1,2 +1,3 @@
 (defpackage #:eloquent.mvc.project
-  (:use #:cl))
+  (:use #:cl)
+  (:export #:make-project))

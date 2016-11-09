@@ -4,13 +4,10 @@ In Common Lisp, there're too many libraries for doing one thing, and sometimes i
 * Layout
 ** Function
 The code layout of a function should be as followed:
-#+BEGIN_SRC lisp
-  (defun function-name (parameters)
-    "Docstring"
-    (check-type)
-    'PARAMETERS-CHECK-ON-BUSINESS
-    'BUSINESS-LOGIC-HERE)
-#+END_SRC
+- Docstring :: The first part in the body of a DEFUN form
+- CHECK-TYPE forms :: Use the CL:CHECK-TYPE to verify the type of parameters
+- Validation and SETF forms :: Validate the parameters, signaled conditions if neccessary. Use the SETF to modify the parameters' values to proper types if neccessary
+- Business logics :: Do the business logics
 * Libs
 - JSON decoding/encoding :: cl-json
 - Pattern matching :: optima
