@@ -1,6 +1,16 @@
 #+STARTUP: indent
 * Meta
 In Common Lisp, there're too many libraries for doing one thing, and sometimes it's hard to choose a library for happy hacking. This document aims to provide an advice list for Eloquent-MVC developers to select functions, libraries or even frameworks(What? A framework used in another framework? Are you kidding me?) when they need. This document is in progress and it's not ready for any projects.
+* Layout
+** Function
+The code layout of a function should be as followed:
+#+BEGIN_SRC lisp
+  (defun function-name (parameters)
+    "Docstring"
+    (check-type)
+    'PARAMETERS-CHECK-ON-BUSINESS
+    'BUSINESS-LOGIC-HERE)
+#+END_SRC
 * Libs
 - JSON decoding/encoding :: cl-json
 - Pattern matching :: optima

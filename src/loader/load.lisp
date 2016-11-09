@@ -1,5 +1,11 @@
 (in-package #:eloquent.mvc.loader)
 
+(define-condition not-directory-error (file-error)
+  ()
+  (:report (lambda (c stream)
+             (format stream "\"~A\" is not an existing directory"
+                     (namestring (file-error-pathname c))))))
+
 (defvar *apps*
   (make-hash-table :test #'equal))
 
@@ -16,6 +22,10 @@
 
 (defun load (directory)
   "Load configuration, router and middlewares under DIRECTORY, and start the server for handling client request."
+  (check-type directory pathname)
+  (unless (uiop:directory-exists-p directory)
+    (error 'not-directory-error :pathname directory))
+
   (let ((config-path (make-config-path directory))
         (middlewares-path (make-middleware-path directory))
         (router-path (make-router-path directory)))
