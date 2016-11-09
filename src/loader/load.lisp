@@ -1,5 +1,13 @@
 (in-package #:eloquent.mvc.loader)
 
+(define-condition project-not-found-error ()
+  ((directory
+    :documentation "The root directory of a project"
+    :initarg :directory))
+  (:report (lambda (c stream)
+             (format stream "Project in \"~A\" isn't started"
+                     (slot-value c 'directory)))))
+
 (define-condition not-directory-error (file-error)
   ()
   (:report (lambda (c stream)
@@ -39,6 +47,11 @@
 
 (defun unload (directory)
   "Unbind the listen on port and stop the server thread."
+  (check-type directory pathname)
   (let ((key (namestring directory)))
-    (stop-server (gethash key *apps*))
-    (remhash key *apps*)))
+    (multiple-value-bind (handler found)
+        (gethash key *apps*)
+      (unless found
+        (error 'project-not-found-error :directory directory))
+      (stop-server handler)
+      (remhash key *apps*))))
