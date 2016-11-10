@@ -14,7 +14,7 @@ The arguments above will be CONSed and passed to CL:APPLY for invoking."
         (query-params (compute-query-params action request))
         (url-params (compute-url-params action request)))
     (setf args (append url-params query-params))
-    (when (get action :requestp)
+    (when (get action :requestp t)
       (push request args))
     (apply (symbol-function action) args)))
 
