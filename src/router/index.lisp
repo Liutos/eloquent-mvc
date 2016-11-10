@@ -28,13 +28,14 @@
 
 (defun parse (file)
   "Read router rules from `file` and validate it."
-  (declare (type (or pathname string) file))
-  (let* ((components (read-file-components file))
-         (rules (components-to-rules components)))
+  (check-type file (or pathname string))
+  (let* ((rule-spec (read-rule-spec file))
+         (rules (mapcar #'make-rule rule-spec)))
     (make-instance '<router>
                    :rules rules)))
 
-(defun read-file-components (file)
+(defun read-rule-spec (file)
+  "Read the content of FILE with customize reader macros."
   (let ((*readtable* (copy-readtable *readtable*)))
     (set-dispatch-macro-character #\# #\/ #'sharp-/ *readtable*)
     (with-open-file (stream file)

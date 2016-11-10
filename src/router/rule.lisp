@@ -24,10 +24,18 @@
                  :type string))
   (:documentation "A rule for matching and hanlding a HTTP request"))
 
+(defgeneric make-rule (rule-spec)
+  (:documentation "Create an instance of ``<rule>'' according to RULE-SPEC."))
 (defgeneric matchp (request rule)
   (:documentation "Return true when the request is match with rule, otherwise return false"))
 (defgeneric path-info= (mode path-info uri-template &key request)
   (:documentation "Return true when PATH-INFO is match against URI-TEMPLATE according to MODE."))
+
+(defmethod make-rule ((rule-spec list))
+  "Create an instance of ``<rule>'' according to RULE-SPEC.
+
+A RULE-SPEC of list form must contains at least three components: The HTTP method, a pattern of matching URL path, and the name of a function for processing this request. See the document of function ``make-rule-from-list'' for details."
+  (apply #'make-rule-from-list rule-spec))
 
 (defmethod matchp ((request eloquent.mvc.request:<request>) (rule <rule>))
   (let ((request-method (eloquent.mvc.request:request-method request))
@@ -82,10 +90,10 @@
                 url-params)
           matchp)))))
 
-(defun make-rule (method uri-template action
-                  &key
-                    query-string-bind
-                    (requestp t))
+(defun make-rule-from-list (method uri-template action
+                            &key
+                              query-string-bind
+                              (requestp t))
   "Create and return a new router rule."
   (check-type method keyword)
   (check-type uri-template (or list string))
