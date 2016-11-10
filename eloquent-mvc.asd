@@ -1,19 +1,20 @@
 (asdf:defsystem #:eloquent-mvc
+  :version "0.0.1"
   :author "Liutos <mat.liutos@gmail.com>"
-  :depends-on (#:alexandria
-               #:cl-json
-               #:cl-ppcre
-               #:cl-yaml
-               #:clack
+  :depends-on ((:version #:alexandria "0.0.0")
+               (:version #:cl-json "0.5.0")
+               (:version #:cl-ppcre "2.0.10")
+               (:version #:cl-yaml "0.1")
+               (:version #:clack "2.0.0")
                #:do-urlencode
-               #:flexi-streams
-               #:local-time
-               #:optima
-               #:quickproject
-               #:salza2
-               #:split-sequence
-               #:trivial-backtrace
-               #:trivial-types
+               (:version #:flexi-streams "1.0.15")
+               (:version #:local-time "1.0.6")
+               (:version #:optima "1.0")
+               (:version #:quickproject "1.2.2")
+               (:version #:salza2 "2.0.9")
+               (:version #:split-sequence "1.2")
+               (:version #:trivial-backtrace "1.1.0")
+               (:version #:trivial-types "0.1")
                #:uiop)
   :components ((:module "src"
                         :serial t

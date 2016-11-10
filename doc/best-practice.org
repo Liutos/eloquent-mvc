@@ -17,6 +17,9 @@ The code layout of a function should be as followed:
 ** alist
 *** search by string key
 Use the function ELOQUENT.MVC.PRELUDE:STRING-ASSOC. In most cases, the return value of CL:ASSOC will be passed to a CDR for retriving the "value" part.
+** file system
+*** check whether directory exists
+Use the function UIOP:DIRECTORY-EXISTS-P
 ** I/O
 *** read a file
 Use the function ELOQUENT.MVC.PRELUDE:READ-FILE-STRING. This function is a thin wrapper of function READ-FILE-STRING from package UIOP.
