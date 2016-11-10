@@ -21,7 +21,7 @@
   (merge-pathnames "config/eloquent-mvc.yaml" directory))
 
 (defun make-middleware-path (directory)
-  (merge-pathnames "config/middlewares" directory))
+  (merge-pathnames "config/middlewares.lisp" directory))
 
 (defun make-router-path (directory)
   (merge-pathnames "config/router.lisp" directory))
