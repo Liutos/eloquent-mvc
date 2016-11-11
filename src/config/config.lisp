@@ -37,7 +37,7 @@
 
 (defun get-log-directory (config)
   "Return the root directory for puting log files, from CONFIG."
-  (get config "log" "directory"))
+  (pathname (get config "log" "directory")))
 
 (defun get-server-port (config)
   "Return the port number to be listened when setting up a server, from CONFIG."
