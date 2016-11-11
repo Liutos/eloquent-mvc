@@ -1,8 +1,9 @@
 application:
-  root: 
+  root: (#| TMPL_VAR application-root |#)
 log:
-  directory: 
+  directory: (#| TMPL_VAR log-directory |#)
 server:
-  port: 
+  port: 8086
+  server: hunchentoot
 static-file:
-  prefix: 
+  prefix: /assets/

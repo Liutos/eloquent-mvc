@@ -15,9 +15,13 @@
     (error 'directory-dup-error :pathname directory))
 
   (pushnew '#:eloquent-mvc depends-on)
-  (quickproject:make-project
-   directory
-   :author (uiop:getenv "USERNAME")
-   :depends-on depends-on
-   :template-directory (merge-pathnames "src/project/template/"
-                                        (asdf:system-source-directory :eloquent-mvc))))
+  (let* ((application-root (namestring directory))
+         (log-directory (namestring (merge-pathnames "log/" application-root))))
+    (quickproject:make-project
+     directory
+     :author (uiop:getenv "USERNAME")
+     :depends-on depends-on
+     :template-directory (merge-pathnames "src/project/template/"
+                                          (asdf:system-source-directory :eloquent-mvc))
+     :template-parameters (list :application-root application-root
+                                :log-directory log-directory))))
