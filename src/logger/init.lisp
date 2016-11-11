@@ -15,8 +15,13 @@
   "Initialize the state of logging system."
   (check-type config eloquent.mvc.config:<config>)
   (let ((directory (eloquent.mvc.config:get-log-directory config)))
-    (unless (uiop:directory-exists-p directory)
-      (error 'not-directory-error :pathname directory))
+    (restart-case
+        (unless (uiop:directory-exists-p directory)
+          (error 'not-directory-error :pathname directory))
+      (create-log-directory ()
+        :report (lambda (stream)
+                  (cl:format stream "Create the directory ~A" directory))
+        (ensure-directories-exist directory)))
     (let ((log (make-instance '<log>
                               :directory directory)))
       (setf *log* log)
