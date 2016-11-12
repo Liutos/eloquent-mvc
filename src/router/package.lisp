@@ -5,4 +5,5 @@
            #:init
            #:not-found
            #:path-info=
+           #:show
            #:try-request))

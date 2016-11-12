@@ -59,6 +59,17 @@
   (setf *router* (parse file))
   (values))
 
+(defun show (&optional (stream *standard-output*))
+  "Print all routing rules to STREAM in readable form."
+  (check-type stream stream)
+  (flet ((aux (rule)
+           (with-slots (action method uri-template) rule
+             (format stream "~A~A~A ~S~%"
+                     method #\Tab uri-template action))))
+    (with-slots (rules) *router*
+      (dolist (rule rules)
+        (aux rule)))))
+
 (defun try-request (method path)
   "Return a rule matching a request consists of METHOD and PATH."
   (check-type method keyword)
