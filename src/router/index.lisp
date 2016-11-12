@@ -58,3 +58,12 @@
   "Parse the router configuration file."
   (setf *router* (parse file))
   (values))
+
+(defun try-request (method path)
+  "Return a rule matching a request consists of METHOD and PATH."
+  (check-type method keyword)
+  (check-type path string)
+  (let ((request (make-instance 'eloquent.mvc.request:<request>
+                                :path-info path
+                                :request-method method)))
+    (find-rule *router* request)))

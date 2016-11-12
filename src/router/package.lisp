@@ -4,4 +4,5 @@
   (:export #:get
            #:init
            #:not-found
-           #:path-info=))
+           #:path-info=
+           #:try-request))
