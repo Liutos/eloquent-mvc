@@ -60,19 +60,21 @@
                                                            (:file "rule")
                                                            (:file "router")
                                                            (:file "index")))
-                                     (:module "dispatcher"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "make-handler")))
                                      (:module "middleware"
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "access-log")
+                                                           (:file "apply-matched-rule")
                                                            (:file "compress")
                                                            (:file "handle-error")
                                                            (:file "parse")
                                                            (:file "parse-body")
+                                                           (:file "set-matched-rule")
                                                            (:file "static-file")))
+                                     (:module "dispatcher"
+                                              :serial t
+                                              :components ((:file "package")
+                                                           (:file "make-handler")))
                                      (:module "loader"
                                               :serial t
                                               :components ((:file "package")
