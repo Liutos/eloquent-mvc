@@ -19,13 +19,6 @@
                     :allow-other-keys t args))))
     (mapcar #'aux components)))
 
-(defun not-found (request)
-  "Send a response with HTTP code 404 to client."
-  (declare (ignore request))
-  (eloquent.mvc.response:respond
-   ""
-   :status 404))
-
 (defun parse (file)
   "Read router rules from `file` and validate it."
   (check-type file (or pathname string))
@@ -50,9 +43,7 @@
 (defun get (request)
   "Return a symbol indicates the action function for REQUEST."
   (let ((rule (find-rule *router* request)))
-    (cond (rule
-           (rule-action rule))
-          (t 'not-found))))
+    rule))
 
 (defun init (file)
   "Parse the router configuration file."

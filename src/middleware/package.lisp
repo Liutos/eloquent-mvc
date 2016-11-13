@@ -5,6 +5,7 @@
            #:compress
            #:fill-template
            #:handle-error
+           #:not-found
            #:parse
            #:parse-body
            #:set-matched-rule
