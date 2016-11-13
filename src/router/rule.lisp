@@ -92,8 +92,10 @@ A RULE-SPEC of list form must contains at least three components: The HTTP metho
 
 (defun make-rule-from-list (method uri-template action
                             &key
+                              content-type
                               query-string-bind
-                              (requestp t))
+                              (requestp t)
+                              template)
   "Create and return a new router rule."
   (check-type method keyword)
   (check-type uri-template (or list string))
@@ -106,9 +108,11 @@ A RULE-SPEC of list form must contains at least three components: The HTTP metho
     (check-type uri-template string)
     (let ((action (first action))
           (initargs (mapcar #'alexandria:make-keyword (rest action))))
-      (setf (cl:get action :initargs) initargs
+      (setf (cl:get action :content-type) content-type
+            (cl:get action :initargs) initargs
             (cl:get action :query-string-bind) query-string-bind
-            (cl:get action :requestp) requestp)
+            (cl:get action :requestp) requestp
+            (cl:get action :template) template)
       (make-instance '<rule>
                      :action action
                      :initargs initargs

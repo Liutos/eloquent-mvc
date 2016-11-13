@@ -16,7 +16,6 @@ The arguments above will be CONSed and passed to CL:APPLY for invoking."
     (setf args (append url-params query-params))
     (when (get action :requestp t)
       (push request args))
-    (format t "args is ~A~%" args)
     (apply (symbol-function action) args)))
 
 (defun compute-query-params (action request)
@@ -43,8 +42,9 @@ The arguments above will be CONSed and passed to CL:APPLY for invoking."
 ;;; EXPORT
 
 (defun apply-matched-rule (request next &key)
+  "Call the real user-defined action stored in REQUEST."
   (declare (ignorable next))
-  (format t "the next will never be invokded~%")
+  (check-type request eloquent.mvc.request:<request>)
   (let ((action (eloquent.mvc.router::rule-action
                  (eloquent.mvc.request:getextra :matched-rule request))))
     (call-action action request)))

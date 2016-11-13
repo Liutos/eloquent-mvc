@@ -5,5 +5,6 @@
            #:init
            #:not-found
            #:path-info=
+           #:rule-action
            #:show
            #:try-request))

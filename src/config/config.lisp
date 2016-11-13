@@ -54,3 +54,11 @@
              :value server))
     (alexandria:make-keyword
      (string-upcase server))))
+
+(defun get-template-directory (config)
+  "Return the path of directory contains template files."
+  (check-type config <config>)
+  (let ((directory (get config "template" "directory")))
+    (or directory
+        (merge-pathnames "app/template/"
+                         (get-application-root config)))))

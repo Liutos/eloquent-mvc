@@ -7,4 +7,5 @@
            #:get-log-directory
            #:get-server-port
            #:get-server-server
+           #:get-template-directory
            #:parse))

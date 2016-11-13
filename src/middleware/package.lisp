@@ -3,6 +3,7 @@
   (:export #:access-log
            #:apply-matched-rule
            #:compress
+           #:fill-template
            #:handle-error
            #:parse
            #:parse-body
