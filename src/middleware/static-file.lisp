@@ -19,7 +19,5 @@
         (root (eloquent.mvc.config:get-application-root config)))
     (if (alexandria:starts-with-subseq prefix path-info)
         (let ((filespec (make-static-file path-info prefix root)))
-          (if (probe-file filespec)
-              (eloquent.mvc.response:respond filespec)
-              (eloquent.mvc.router:not-found request)))
+          (eloquent.mvc.response:respond filespec))
         (funcall next request))))
