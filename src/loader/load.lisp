@@ -45,6 +45,12 @@
       (setf (gethash key *apps*)
             (start-server config (eloquent.mvc.dispatcher:make-handler config middlewares))))))
 
+(defun reload (directory)
+  "Shutdown and restart the application at DIRECTORY."
+  (check-type directory pathname)
+  (unload directory)
+  (load directory))
+
 (defun unload (directory)
   "Unbind the listen on port and stop the server thread."
   (check-type directory pathname)
