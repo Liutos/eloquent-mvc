@@ -36,8 +36,9 @@ The arguments above will be CONSed and passed to CL:APPLY for invoking."
   (check-type request eloquent.mvc.request:<request>)
   (let ((url-params (eloquent.mvc.request:getextra :url-params request)))
     (flet ((aux (key)
-             (getf url-params key)))
-      (mapcar #'aux (get action :initargs)))))
+             (list (eloquent.mvc.prelude:make-keyword key)
+                   (getf url-params key))))
+      (alexandria:mappend #'aux (get action :initargs)))))
 
 ;;; EXPORT
 
