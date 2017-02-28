@@ -17,6 +17,18 @@
            :type fixnum))
   (:documentation "A HTTP response object"))
 
+(define-condition http-compatible-error (error)
+  ((message
+    :initarg :message
+    :reader http-message
+    :type string)
+   (status
+    :initarg :status
+    :reader http-status
+    :type fixnum))
+  (:report (lambda (c stream)
+             (format stream "~D:~A" (http-status c) (http-message c)))))
+
 (defmethod initialize-instance :after ((instance <response>) &rest initargs)
   (declare (ignore initargs))
   (with-slots (body bytes-sent) instance

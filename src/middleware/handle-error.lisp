@@ -20,6 +20,10 @@
   (check-type request eloquent.mvc.request:<request>)
   (check-type next function)
   (handler-case (funcall next request)
+    (eloquent.mvc.response:http-compatible-error (e)
+      (eloquent.mvc.response:respond
+       (eloquent.mvc.response:http-message e)
+       :status (eloquent.mvc.response:http-status e)))
     (error (e)
       (error-log e)
       (let ((body (error-to-body e)))

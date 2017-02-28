@@ -1,6 +1,9 @@
 (defpackage #:eloquent.mvc.response
   (:use #:cl)
   (:export #:<response>
+           #:http-compatible-error
+           #:http-message
+           #:http-status
            #:override-header
            #:respond
            #:respond-json
