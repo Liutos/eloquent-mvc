@@ -19,5 +19,11 @@
         (root (eloquent.mvc.config:get-application-root config)))
     (if (alexandria:starts-with-subseq prefix path-info)
         (let ((filespec (make-static-file path-info prefix root)))
-          (eloquent.mvc.response:respond filespec))
+          (if (uiop:file-exists-p filespec)
+              (eloquent.mvc.response:respond filespec)
+              (progn
+                (warn "~A: This file should be existed~%" filespec)
+                (error 'eloquent.mvc.response:http-compatible-error
+                       :message ""
+                       :status 404))))
         (funcall next request))))

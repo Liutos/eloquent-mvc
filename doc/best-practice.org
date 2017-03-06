@@ -20,6 +20,8 @@ Use the function ELOQUENT.MVC.PRELUDE:STRING-ASSOC. In most cases, the return va
 ** file system
 *** check whether directory exists
 Use the function UIOP:DIRECTORY-EXISTS-P
+*** check whether file exists
+Use the function UIOP:FILE-EXISTS-P
 ** I/O
 *** read a file
 Use the function ELOQUENT.MVC.PRELUDE:READ-FILE-STRING. This function is a thin wrapper of function READ-FILE-STRING from package UIOP.
