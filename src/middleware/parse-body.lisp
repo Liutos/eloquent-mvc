@@ -4,8 +4,9 @@
   "Extract the real Content-Type from REQUEST, removing the optional charset part."
   (check-type request eloquent.mvc.request:<request>)
   (let ((content-type (eloquent.mvc.request:request-content-type request)))
-    (apply #'values
-           (eloquent.mvc.prelude:split content-type #\;))))
+    (when content-type
+      (apply #'values
+             (eloquent.mvc.prelude:split content-type #\;)))))
 
 (defun parse-json-body (string-body)
   (let ((cl-json:*identifier-name-to-key* #'identity)
