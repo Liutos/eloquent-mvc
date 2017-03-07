@@ -10,8 +10,10 @@
           response
         (when (stringp body)
           (let ((bytes (salza2:compress-data (flexi-streams:string-to-octets body :external-format :utf-8)
-                                             'salza2:gzip-compressor)))
-            (setf body bytes
-                  headers (eloquent.mvc.response:override-header
-                           headers :content-encoding "gzip"))))))
+                                             'salza2:gzip-compressor))
+                (bytes-sent (eloquent.mvc.response:response-bytes-sent response)))
+            (when (< (length bytes) bytes-sent)
+              (setf body bytes
+                    headers (eloquent.mvc.response:override-header
+                             headers :content-encoding "gzip")))))))
     response))
