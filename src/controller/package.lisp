@@ -1,5 +1,6 @@
 (defpackage #:eloquent.mvc.controller
   (:use #:cl)
-  (:export #:json-body-bind
+  (:export #:form-bind
+           #:json-body-bind
            #:query-string-bind
            #:url-bind))

@@ -86,6 +86,7 @@
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "alist-bind")
+                                                           (:file "form-bind")
                                                            (:file "json-body-bind")
                                                            (:file "query-string-bind")
                                                            (:file "url-bind")))
