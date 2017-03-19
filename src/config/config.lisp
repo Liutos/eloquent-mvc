@@ -31,6 +31,9 @@
 
 ;;; EXPORT
 
+(defvar *config* nil
+  "The object contains the runtime configuration.")
+
 (defun get-application-root (config)
   "Return the project's root directory specified in CONFIG."
   (get config "application" "root"))

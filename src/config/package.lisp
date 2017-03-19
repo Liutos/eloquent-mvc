@@ -1,7 +1,8 @@
 (defpackage #:eloquent.mvc.config
   (:use #:cl)
   (:shadow #:get)
-  (:export #:<config>
+  (:export #:*config*
+           #:<config>
            #:get
            #:get-application-root
            #:get-log-directory
