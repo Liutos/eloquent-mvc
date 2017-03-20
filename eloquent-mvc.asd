@@ -2,6 +2,7 @@
   :version "0.0.1"
   :author "Liutos <mat.liutos@gmail.com>"
   :depends-on ((:version #:alexandria "0.0.0")
+               #:cl-emb
                (:version #:cl-json "0.5.0")
                (:version #:cl-ppcre "2.0.10")
                (:version #:cl-yaml "0.1")
