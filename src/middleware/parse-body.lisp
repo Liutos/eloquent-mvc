@@ -9,9 +9,7 @@
              (eloquent.mvc.prelude:split content-type #\;)))))
 
 (defun parse-json-body (string-body)
-  (let ((cl-json:*identifier-name-to-key* #'identity)
-        (cl-json:*json-identifier-name-to-lisp* #'identity))
-    (cl-json:decode-json-from-string string-body)))
+  (eloquent.mvc.prelude:decode-json-from-string string-body))
 
 (defun parse-form-body (string-body)
   (eloquent.mvc.prelude:parse-query-string string-body))
