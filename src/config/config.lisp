@@ -29,8 +29,9 @@
   (with-slots (content) config
     (multiple-value-bind (section found)
         (gethash section-name content)
-      (when found
-        (gethash option-name section)))))
+      (cond (found (gethash option-name section))
+            ((config-base config)
+             (get (config-base config) section-name option-name))))))
 
 ;;; EXPORT
 
