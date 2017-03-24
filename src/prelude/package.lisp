@@ -1,6 +1,7 @@
 (defpackage #:eloquent.mvc.prelude
   (:use #:cl)
-  (:export #:find-symbol*
+  (:export #:decode-json-from-string
+           #:find-symbol*
            #:make-keyword
            #:parse-query-string
            #:read-file-string
