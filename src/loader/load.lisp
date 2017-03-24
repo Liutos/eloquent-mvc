@@ -17,8 +17,16 @@
 (defvar *apps*
   (make-hash-table :test #'equal))
 
-(defun make-config-path (directory)
-  (merge-pathnames "config/eloquent-mvc.yaml" directory))
+(defun make-config-paths (directory)
+  "Returns the file path of a basic configuration file and a extented one, which is optional."
+  (let ((basic (merge-pathnames "config/eloquent-mvc.yaml" directory))
+        (env (uiop:getenv "CL_ENV"))
+        extented)
+    (when env
+      (setf extented (merge-pathnames (format nil "config/eloquent-mvc.~A.yaml" env) directory)))
+    (if (and extented (uiop:file-exists-p extented))
+        (list basic extented)
+        (list basic))))
 
 (defun make-middleware-path (directory)
   (merge-pathnames "config/middlewares.lisp" directory))
@@ -34,10 +42,10 @@
   (unless (uiop:directory-exists-p directory)
     (error 'not-directory-error :pathname directory))
 
-  (let ((config-path (make-config-path directory))
+  (let ((config-paths (make-config-paths directory))
         (middlewares-path (make-middleware-path directory))
         (router-path (make-router-path directory)))
-    (let ((config (eloquent.mvc.config:parse config-path))
+    (let ((config (eloquent.mvc.config:parse config-paths))
           (key (namestring directory))
           (middlewares (eloquent.mvc.middleware:parse middlewares-path)))
       (eloquent.mvc.logger:init config)
