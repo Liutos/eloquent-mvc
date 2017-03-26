@@ -2,6 +2,7 @@
   (:use :cl)
   (:export #:<request>
            #:env-to-request
+           #:get-cookie
            #:get-header
            #:getextra
            #:request-content-type

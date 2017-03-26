@@ -29,6 +29,7 @@
                                                            (:file "string-to-alist")
                                                            (:file "read-lines")
                                                            (:file "urldecode")
+                                                           (:file "parse-cookie-string")
                                                            (:file "parse-query-string")
                                                            (:file "string-assoc")))
                                      (:module "config"
@@ -40,6 +41,7 @@
                                               :serial t
                                               :components ((:file "package")
                                                            (:file "env-to-request")
+                                                           (:file "get-cookie")
                                                            (:file "get-header")
                                                            (:file "http-request")
                                                            (:file "request")))
