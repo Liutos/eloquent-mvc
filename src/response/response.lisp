@@ -48,6 +48,14 @@
 (defmethod (setf response-body) :after ((body sequence) (object <response>))
   (setf (slot-value object 'bytes-sent) (length body)))
 
+(defun append-header (response field value)
+  "Add a new HTTP header, whose field name is FIELD and value is VALUE, to the existing headers in RESPONSE."
+  (check-type response <response>)
+  (check-type field keyword)
+  (check-type value string)
+  (with-slots (headers) response
+    (setf headers (override-header headers field value))))
+
 (defun override-header (headers field value)
   "Return a new plist contains all elements in HEADERS except the FIELD key. The value of FIELD in the newly created plist is replaced by VALUE."
   (declare (type (trivial-types:property-list) headers))
