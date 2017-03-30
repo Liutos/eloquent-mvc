@@ -31,7 +31,8 @@
                                                            (:file "urldecode")
                                                            (:file "parse-cookie-string")
                                                            (:file "parse-query-string")
-                                                           (:file "string-assoc")))
+                                                           (:file "string-assoc")
+                                                           (:file "now")))
                                      (:module "config"
                                               :serial t
                                               :components ((:file "package")
