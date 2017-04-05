@@ -9,7 +9,13 @@
              (eloquent.mvc.prelude:split content-type #\;)))))
 
 (defun parse-json-body (string-body)
-  (eloquent.mvc.prelude:decode-json-from-string string-body))
+  (handler-case
+      (eloquent.mvc.prelude:decode-json-from-string string-body)
+    (cl-json:json-syntax-error (e)
+      (declare (ignorable e))
+      (error 'eloquent.mvc.response:http-compatible-error
+             :message "JSON字符串解析失败"
+             :status 400))))
 
 (defun parse-form-body (string-body)
   (eloquent.mvc.prelude:parse-query-string string-body))
