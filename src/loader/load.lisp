@@ -36,8 +36,12 @@
 
 ;;; EXPORT
 
-(defun load (directory)
-  "Load configuration, router and middlewares under DIRECTORY, and start the server for handling client request."
+(defun load (directory
+             &key before-hook)
+  "Load configuration, router and middlewares under DIRECTORY, and start the server for handling client request.
+
+If BEFORE-HOOK is a function, it will be invoked before the server started."
+  (check-type before-hook (or function null))
   (check-type directory pathname)
   (unless (uiop:directory-exists-p directory)
     (error 'not-directory-error :pathname directory))
@@ -50,6 +54,8 @@
           (middlewares (eloquent.mvc.middleware:parse middlewares-path)))
       (eloquent.mvc.logger:init config)
       (eloquent.mvc.router:init router-path)
+      (when before-hook
+        (funcall before-hook config))
       (setf (gethash key *apps*)
             (start-server config (eloquent.mvc.dispatcher:make-handler config middlewares))))))
 
