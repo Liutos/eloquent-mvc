@@ -65,13 +65,17 @@ If BEFORE-HOOK is a function, it will be invoked before the server started."
   (unload directory)
   (load directory))
 
-(defun unload (directory)
+(defun unload (directory
+               &key before-hook)
   "Unbind the listen on port and stop the server thread."
+  (check-type before-hook (or function null))
   (check-type directory pathname)
   (let ((key (namestring directory)))
     (multiple-value-bind (handler found)
         (gethash key *apps*)
       (unless found
         (error 'project-not-found-error :directory directory))
+      (when before-hook
+        (funcall before-hook))
       (stop-server handler)
       (remhash key *apps*))))
