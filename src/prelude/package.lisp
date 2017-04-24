@@ -1,6 +1,9 @@
 (defpackage #:eloquent.mvc.prelude
   (:use #:cl)
-  (:export #:decode-json-from-string
+  (:export #:alist-bind
+           #:alist-bind-error
+           #:alist-bind-error-message
+           #:decode-json-from-string
            #:find-symbol*
            #:make-keyword
            #:now
