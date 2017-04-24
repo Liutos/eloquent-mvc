@@ -1,6 +1,7 @@
 (defpackage #:eloquent.mvc.middleware
   (:use #:cl)
-  (:export #:access-log
+  (:export #:*middlewares*
+           #:access-log
            #:apply-matched-rule
            #:compress
            #:fill-template

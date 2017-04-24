@@ -24,7 +24,8 @@
                           (eloquent.mvc.middleware:apply-matched-rule request (values))))
          (middleware-caller (make-middleware-caller config middlewares action-caller)))
     (lambda (env)
-      (let ((eloquent.mvc.config:*config* config))
+      (let ((eloquent.mvc.config:*config* config)
+            (eloquent.mvc.middleware:*middlewares* middlewares))
         (let ((request (eloquent.mvc.request:env-to-request env)))
           (eloquent.mvc.response:response-to-list
            (funcall middleware-caller request)))))))

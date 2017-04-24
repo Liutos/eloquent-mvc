@@ -67,6 +67,7 @@
                                      (:module "middleware"
                                               :serial t
                                               :components ((:file "package")
+                                                           (:file "index")
                                                            (:file "access-log")
                                                            (:file "apply-matched-rule")
                                                            (:file "compress")
