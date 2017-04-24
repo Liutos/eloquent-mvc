@@ -123,6 +123,11 @@ A RULE-SPEC of list form must contains at least three components: The HTTP metho
 (defun method= (request-method rule-method)
   (eq request-method rule-method))
 
+(defun print-rule (rule)
+  "Display the information of RULE in readable form."
+  (check-type rule <rule>)
+  (format t "~A ~A~%" (rule-method rule) (rule-uri-template rule)))
+
 (defun slash-path-p (p)
   (alexandria:ends-with #\/ p))
 

@@ -1,7 +1,5 @@
 (in-package #:eloquent.mvc.router)
 
-(defvar *router* nil)
-
 (defun components-to-rules (components)
   (map-components #'make-rule components))
 
