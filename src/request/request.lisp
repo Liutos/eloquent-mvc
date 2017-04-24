@@ -35,3 +35,8 @@
   (declare (type <request> req))
   (with-slots (extras) req
     (setf (gethash key extras) value)))
+
+(defun request-body (request)
+  "Returns the HTTP body parsed from REQUEST."
+  (check-type request <request>)
+  (eloquent.mvc.request:getextra :body request))

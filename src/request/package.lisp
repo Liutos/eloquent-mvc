@@ -5,6 +5,7 @@
            #:get-cookie
            #:get-header
            #:getextra
+           #:request-body
            #:request-content-type
            #:request-method
            #:request-path-info
