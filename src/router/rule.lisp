@@ -139,9 +139,9 @@ A RULE-SPEC of list form must contains at least three components: The HTTP metho
   (check-type template string)
   (mapcar #'(lambda (s)
               (eloquent.mvc.prelude:make-keyword (subseq s 1)))
-          (cl-ppcre:all-matches-as-strings ":\\w+" template)))
+          (cl-ppcre:all-matches-as-strings ":[-\\w_]+" template)))
 
 (defun template-to-regexp (template)
   "Convert the TEMPLATE to equivalent regular expression."
   (check-type template string)
-  (cl-ppcre:regex-replace-all ":\\w+" template "([^/]+)"))
+  (cl-ppcre:regex-replace-all ":[-\\w_]+" template "([^/]+)"))
