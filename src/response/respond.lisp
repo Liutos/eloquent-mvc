@@ -2,10 +2,11 @@
 
 (defun respond (body
                 &key
+                  (encoder #'identity)
                   (headers '())
                   (status 200))
   (make-instance '<response>
-                 :body body
+                 :body (funcall encoder body)
                  :status status
                  :headers headers))
 

@@ -5,6 +5,7 @@
            #:http-compatible-error
            #:http-message
            #:http-status
+           #:make-encoder
            #:override-header
            #:respond
            #:respond-json

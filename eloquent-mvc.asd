@@ -50,6 +50,7 @@
                                      (:module "response"
                                               :serial t
                                               :components ((:file "package")
+                                                           (:file "encoder")
                                                            (:file "response")
                                                            (:file "response-to-list")
                                                            (:file "respond")))
