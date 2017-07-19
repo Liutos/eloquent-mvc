@@ -5,6 +5,8 @@
                   (encoder #'identity)
                   (headers '())
                   (status 200))
+  (when (keywordp encoder)
+    (setf encoder (make-encoder encoder)))
   (make-instance '<response>
                  :body (funcall encoder body)
                  :status status
