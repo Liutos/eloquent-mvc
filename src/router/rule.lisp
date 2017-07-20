@@ -144,4 +144,9 @@ A RULE-SPEC of list form must contains at least three components: The HTTP metho
 (defun template-to-regexp (template)
   "Convert the TEMPLATE to equivalent regular expression."
   (check-type template string)
-  (cl-ppcre:regex-replace-all ":[-\\w_]+" template "([^/]+)"))
+  (let ((regexp (cl-ppcre:regex-replace-all ":[-\\w_]+" template "([^/]+)")))
+    (unless (char= (char regexp 0) #\^)
+      (setf regexp (concatenate 'string "^" regexp)))
+    (unless (char= (char regexp (1- (length regexp))) #\$)
+      (setf regexp (concatenate 'string regexp "$")))
+    regexp))
