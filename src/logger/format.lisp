@@ -1,8 +1,21 @@
 (in-package #:eloquent.mvc.logger)
 
+(defun last-hour ()
+  "Return a string represents the last hour in format YYYYMMDDhhmm."
+  (local-time:format-timestring
+   nil
+   (local-time:timestamp- (local-time:universal-to-timestamp (get-universal-time))
+                          1 :hour)
+   :format '((:year 2) (:month 2) (:day 2) (:hour 2))))
+
 (defun make-destination (label log)
-  (merge-pathnames (concatenate 'string (string-downcase (symbol-name label)) ".log")
-                   (log-directory log)))
+  "Return a pathname object represents the log file to be written.
+
+The old log file would be renamed if it was created not at current hour."
+  (let ((log-path (merge-pathnames (concatenate 'string (string-downcase (symbol-name label)) ".log")
+                                   (log-directory log))))
+    (rotate log-path)
+    log-path))
 
 (defun now ()
   "Return a string represents the current time, in the format YYYY-MM-DD hh:mm:ss."
@@ -10,6 +23,23 @@
    nil
    (local-time:universal-to-timestamp (get-universal-time))
    :format '((:year 2) "-" (:month 2) "-" (:day 2) " " (:hour 2) ":" (:min 2) ":" (:sec 2) " " :gmt-offset-hhmm)))
+
+(defun rotate (log-path)
+  "Rename the file at LOG-PATH by appending the \".YYYYMMDDhh\" suffix if this log file was created in the last hour."
+  (declare (optimize (speed 0)))
+  (check-type log-path pathname)
+  #+sbcl
+  (let* ((stat (sb-posix:stat log-path))
+         (ctime (sb-posix:stat-ctime stat))
+         (now (eloquent.mvc.prelude:now :second))
+         (current-hour (- now (mod now (* 60 60)))))
+    (when (< ctime current-hour)
+      (let* ((suffix (last-hour))
+             (new-name (concatenate 'string
+                                    (namestring log-path)
+                                    "."
+                                    suffix)))
+        (rename-file log-path (pathname new-name))))))
 
 ;;; EXPORT
 
