@@ -18,6 +18,10 @@
          :initarg :mode
          :reader rule-mode
          :type keyword)
+   (precondition :documentation "A function designates the precondition of matching this rule."
+                 :initarg :precondition
+                 :reader rule-precondition
+                 :type function)
    (uri-template :documentation "URI template of paths handled by the action in this rule"
                  :initarg :uri-template
                  :reader rule-uri-template
@@ -40,10 +44,11 @@ A RULE-SPEC of list form must contains at least three components: The HTTP metho
 (defmethod matchp ((request eloquent.mvc.request:<request>) (rule <rule>))
   (let ((request-method (eloquent.mvc.request:request-method request))
         (request-path-info (eloquent.mvc.request:request-path-info request)))
-    (with-slots (method mode uri-template) rule
+    (with-slots (method mode precondition uri-template) rule
       (and (method= request-method method)
            (path-info= mode request-path-info uri-template
-                       :request request)))))
+                       :request request)
+           (precondition-satisfy precondition request)))))
 
 (defmethod path-info= ((mode (eql :normal)) (path-info string) (uri-template string)
                        &key request)
@@ -93,6 +98,7 @@ A RULE-SPEC of list form must contains at least three components: The HTTP metho
 (defun make-rule-from-list (method uri-template action
                             &key
                               content-type
+                              precondition
                               query-string-bind
                               (requestp t)
                               template)
@@ -100,6 +106,7 @@ A RULE-SPEC of list form must contains at least three components: The HTTP metho
   (check-type method keyword)
   (check-type uri-template (or list string))
   (check-type action (or list symbol))
+  (check-type precondition (or function null))
   (when (stringp uri-template)
     (setf uri-template (list :normal uri-template)))
   (setf action (alexandria:ensure-list action))
@@ -118,10 +125,18 @@ A RULE-SPEC of list form must contains at least three components: The HTTP metho
                      :initargs initargs
                      :method method
                      :mode mode
+                     :precondition precondition
                      :uri-template uri-template))))
 
 (defun method= (request-method rule-method)
   (eq request-method rule-method))
+
+(defun precondition-satisfy (precondition request)
+  "Return T if PRECONDITION is null, or REQUEST satisfies the PRECONDITION."
+  (check-type precondition (or function null))
+  (check-type request eloquent.mvc.request:<request>)
+  (or (null precondition)
+      (funcall precondition request)))
 
 (defun print-rule (rule)
   "Display the information of RULE in readable form."
