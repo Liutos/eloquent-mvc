@@ -64,3 +64,26 @@ Routes may also utilize query parameters:
     (eloquent.mvc.response:respond
      (format nil "Hello, ~A, the author of ~A!" author title))))
 ```
+
+## Conditions
+
+Routes may include an additional matching condition, this is specified by the :PRECONDITION property:
+
+```lisp
+((:get "/" a-handler-name
+       :precondition a-precondition)
+ (:get "/" a-handler-name
+       :precondition another-precondition))
+```
+
+A request will be processed by A-HANDLER-NAME if its method is GET, path is "/", and satisfies the A-PRECONDITION. If the first rule failed, the request will be submit to the second rule for checking.
+
+## Logging
+
+The package ELOQUENT.MVC.LOGGER provides the abilities for logging something. It reads configuration from section log in file eloquent-mvc.yaml, valid options include:
+
+- directory. The absolute path of a directory contains log files. This path must end with a slash.
+
+Function FORMAT exported from this package is responsible for logging. It's like the CL:FORMAT but the first parameter is a label, which indicates a file for writting logs. For example, in the function ACCESS-LOG exported from ELOQUENT.MVC.MIDDLEWARE, the label is :ACCESS then the messages were written in file access.log.
+
+The logger switch files automatically as time goes by. The old log file will be renamed by appending a suffix of pattern YYYYMMDDhh, where YYYY for the year, MM for the month, DD for date, and hh for hour.
