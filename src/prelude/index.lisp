@@ -11,19 +11,8 @@
 (defmacro alist-bind (bindings alist-expr &body body)
   "Bind variables to values extracted from ALIST, and evaluate the BODY."
   (alexandria:with-gensyms (alist)
-    (labels ((wrap-value (expr &key default path requirep type)
-               (when requirep
-                 (setf expr `(or ,expr
-                                 (error 'alist-bind-error
-                                        :message (format nil "缺少`~A`参数" ,path)))))
-               (when type
-                 (ecase type
-                   (:integer (setf expr (alexandria:with-gensyms (val)
-                                          `(let ((,val ,expr))
-                                             (and ,val (parse-integer ,val))))))))
-               (when default
-                 (setf expr `(or ,expr ,default)))
-               expr)
+    (labels ((wrap-value (expr &rest args)
+               `(compute-value ,expr ,@args))
              (make-binding (binding)
                (destructuring-bind (var field &rest args) binding
                  `(,var ,(apply #'wrap-value
@@ -34,3 +23,22 @@
         `(let* ((,alist ,alist-expr)
                 ,@bindings)
            ,@body)))))
+
+(defun compute-value (raw
+                      &key
+                        default
+                        path
+                        requirep
+                        type)
+  "Validate and convert RAW to another form according to the keyword arguments."
+  (when (and requirep (null raw))
+    (error 'alist-bind-error
+           :message (format nil "缺少`~A`参数" path)))
+  (let ((value raw))
+    (when type
+      (ecase type
+        (:integer (unless (integerp value)
+                    (setf value (parse-integer value))))))
+    (when (and default (null value))
+      (setf value default))
+    value))
