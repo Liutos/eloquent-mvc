@@ -12,6 +12,8 @@
   (lambda (list)
     (check-type list list)
     (with-output-to-string (s)
-      (cl-json:with-array (s)
-        (dolist (e list)
-          (cl-json:encode-json-plist e s))))))
+      (json:with-array (s)
+        (loop
+           :for rest :on list
+           :do (json:encode-json-plist (first rest) s)
+           :when (rest rest) :do (princ "," s))))))
