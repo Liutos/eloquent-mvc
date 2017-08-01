@@ -28,6 +28,8 @@ The old log file would be renamed if it was created not at current hour."
   "Rename the file at LOG-PATH by appending the \".YYYYMMDDhh\" suffix if this log file was created in the last hour."
   (declare (optimize (speed 0)))
   (check-type log-path pathname)
+  (unless (uiop:file-exists-p log-path)
+    (return-from rotate))
   #+sbcl
   (let* ((stat (sb-posix:stat log-path))
          (ctime (sb-posix:stat-ctime stat))
