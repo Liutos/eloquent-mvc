@@ -4,6 +4,7 @@
            #:alist-bind-error
            #:alist-bind-error-message
            #:decode-json-from-string
+           #:format-timestring
            #:find-symbol*
            #:make-keyword
            #:now
