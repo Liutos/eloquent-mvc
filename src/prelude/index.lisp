@@ -47,6 +47,11 @@
                                &optional timezone)
   (:documentation "Constructs a string representation of TIMESTAMP according to FORMAT and write to DEST."))
 
+(defmethod format-timestring (dest timestamp format
+                              &optional timezone)
+  "Behave as LOCAL-TIME:FORMAT-TIMESTRING."
+  (local-time:format-timestring dest timestamp :format format :timezone timezone))
+
 (defmethod format-timestring (dest timestamp (format (eql :iso-8601-bj-format))
                               &optional timezone)
   "Constructs a string representation fo TIMESTAMP in the ISO-8601 like format, and write to DEST. The optional parameter TIMEZONE is ignored and the underlying timezone will be set to Asia/Shanghai.
@@ -59,3 +64,9 @@ The concrete output format is YYYY-MM-DD hh:mm:ss."
      dest timestamp
      :format '((:year 4) #\- (:month 2) #\- (:day 2) #\Space (:hour 2) #\: (:min 2) #\: (:sec 2))
      :timezone timezone)))
+
+(defmethod format-timestring (dest timestamp (format (eql :nginx-log-format))
+                              &optional timezone)
+  "Constructs a string representation of TIMESTAMP in format like Nginx log timestamp, and writes it to DEST."
+  (let ((format '((:day 2) "/" :short-month "/" (:year 2) ":" (:hour 2) ":" (:min 2) ":" (:sec 2) " " :gmt-offset-hhmm)))
+    (local-time:format-timestring dest timestamp :format format :timezone timezone)))
