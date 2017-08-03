@@ -2,11 +2,11 @@
 
 (defun last-hour ()
   "Return a string represents the last hour in format YYYYMMDDhhmm."
-  (local-time:format-timestring
+  (eloquent.mvc.prelude:format-timestring
    nil
    (local-time:timestamp- (local-time:universal-to-timestamp (get-universal-time))
                           1 :hour)
-   :format '((:year 2) (:month 2) (:day 2) (:hour 2))))
+   :iso-8601-basic-date-format))
 
 (defun make-destination (label log)
   "Return a pathname object represents the log file to be written.

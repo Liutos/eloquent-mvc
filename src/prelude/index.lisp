@@ -52,9 +52,15 @@
   "Behave as LOCAL-TIME:FORMAT-TIMESTRING."
   (local-time:format-timestring dest timestamp :format format :timezone timezone))
 
+(defmethod format-timestring (dest timestamp (format (eql :iso-8601-basic-date-format))
+                              &optional timezone)
+  "Constructs a string representation of TIMESTAMP in the basic ISO-8601 format, and writes it to DEST. Only the date parts will be output, and time, includes hours, minutes and seconds will be ignored."
+  (let ((format '((:year 2) (:month 2) (:day 2) (:hour 2))))
+    (local-time:format-timestring dest timestamp :format format :timezone timezone)))
+
 (defmethod format-timestring (dest timestamp (format (eql :iso-8601-bj-format))
                               &optional timezone)
-  "Constructs a string representation fo TIMESTAMP in the ISO-8601 like format, and write to DEST. The optional parameter TIMEZONE is ignored and the underlying timezone will be set to Asia/Shanghai.
+  "Constructs a string representation of TIMESTAMP in the ISO-8601 like format, and writes to DEST. The optional parameter TIMEZONE is ignored and the underlying timezone will be set to Asia/Shanghai.
 
 The concrete output format is YYYY-MM-DD hh:mm:ss."
   (declare (ignorable timezone))

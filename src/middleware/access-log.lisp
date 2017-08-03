@@ -1,10 +1,10 @@
 (in-package #:eloquent.mvc.middleware)
 
 (defun make-time-local (moment)
-  (local-time:format-timestring
+  (eloquent.mvc.prelude:format-timestring
    nil
    (local-time:universal-to-timestamp moment)
-   :format '((:day 2) "/" :short-month "/" (:year 2) ":" (:hour 2) ":" (:min 2) ":" (:sec 2) " " :gmt-offset-hhmm)))
+   :nginx-log-format))
 
 (defun access-log (request next &key)
   "For every request, print a NGINX-style log message into file named \"access.log\" under log directory."
