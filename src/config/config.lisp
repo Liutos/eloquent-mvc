@@ -42,6 +42,15 @@
   "Return the project's root directory specified in CONFIG."
   (get config "application" "root"))
 
+(defun get-cron-jobs (config)
+  "Return a pathname object indicating a file contains the jobs executed periodly. Return NIL if there's no such a file."
+  (let ((path (get config "cron" "jobs")))
+    (and path (pathname path))))
+
+(defun get-cron-log (config)
+  "Return the pathname of log file for writting by CL-CRON:LOG-CRON-MESSAGE."
+  (get config "cron" "log"))
+
 (defun get-log-directory (config)
   "Return the root directory for puting log files, from CONFIG."
   (pathname (get config "log" "directory")))

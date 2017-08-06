@@ -1,5 +1,8 @@
 application:
   root: (#| TMPL_VAR application-root |#)
+cron:
+  jobs: (#| TMPL_VAR application-root |#)/config/jobs.cron
+  log: (#| TMPL_VAR log-directory |#)/cron.log
 log:
   directory: (#| TMPL_VAR log-directory |#)
 server:

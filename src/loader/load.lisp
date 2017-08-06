@@ -57,7 +57,9 @@ If BEFORE-HOOK is a function, it will be invoked before the server started."
       (when before-hook
         (funcall before-hook config))
       (setf (gethash key *apps*)
-            (start-server config (eloquent.mvc.dispatcher:make-handler config middlewares))))))
+            (start-server config (eloquent.mvc.dispatcher:make-handler config middlewares)))
+      (let ((jobs-file (eloquent.mvc.config:get-cron-jobs config)))
+        (start-cron jobs-file)))))
 
 (defun reload (directory)
   "Shutdown and restart the application at DIRECTORY."
@@ -75,6 +77,7 @@ If BEFORE-HOOK is a function, it will be invoked before the server started."
         (gethash key *apps*)
       (unless found
         (error 'project-not-found-error :directory directory))
+      (stop-cron)
       (when before-hook
         (funcall before-hook))
       (stop-server handler)

@@ -3,6 +3,7 @@
   :author "Liutos <mat.liutos@gmail.com>"
   :depends-on ((:version #:alexandria "0.0.0")
                #:cl-emb
+               (:version #:cl-cron "0.1")
                (:version #:cl-json "0.5.0")
                (:version #:cl-ppcre "2.0.10")
                (:version #:cl-yaml "0.1")
@@ -87,6 +88,7 @@
                                      (:module "loader"
                                               :serial t
                                               :components ((:file "package")
+                                                           (:file "cron")
                                                            (:file "server")
                                                            (:file "load")))
                                      (:module "controller"
