@@ -3,6 +3,7 @@
   :author "Liutos <mat.liutos@gmail.com>"
   :depends-on ((:version #:alexandria "0.0.0")
                #:cl-emb
+               (:version #:cl-base64 "3.1")
                (:version #:cl-cron "0.1")
                (:version #:cl-json "0.5.0")
                (:version #:cl-ppcre "2.0.10")
@@ -15,6 +16,7 @@
                (:version #:quickproject "1.2.2")
                (:version #:salza2 "2.0.9")
                (:version #:split-sequence "1.2")
+               #:str
                (:version #:trivial-backtrace "1.1.0")
                (:version #:trivial-types "0.1")
                #:uiop)
@@ -22,7 +24,11 @@
                         :serial t
                         :components ((:module "prelude"
                                               :serial t
-                                              :components ((:file "package")
+                                              :components ((:module "base64"
+                                                                    :serial t
+                                                                    :components ((:file "package")
+                                                                                 (:file "export")))
+                                                           (:file "package")
                                                            (:file "find-symbol")
                                                            (:file "make-keyword")
                                                            (:file "read-file-string")
