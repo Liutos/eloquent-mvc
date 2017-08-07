@@ -1,5 +1,12 @@
 (in-package #:eloquent.mvc.prelude.base64)
 
+(defun urlize (s)
+  "Replaces the equal, plus and slash signs in S to empty, minus and underscore signs."
+  (check-type s string)
+  (str:replace-all "=" ""
+                   (str:replace-all "+" "-"
+                                    (str:replace-all "/" "_" s))))
+
 (defgeneric decode (input &key uri)
   (:documentation "Converts a base64-encoded INPUT into its original form. If URI is not NIL, INPUT will be considered as encoded by calling ENCODE with URI set to T also."))
 
@@ -23,7 +30,13 @@
   "Returns a base64-encoded string constructed from INPUT."
   (let ((encoded (cl-base64:string-to-base64-string input)))
     (if uri
-        (str:replace-all "=" ""
-                         (str:replace-all "+" "-"
-                                          (str:replace-all "/" "_" encoded)))
+        (urlize encoded)
+        encoded)))
+
+(defmethod encode ((input vector) &key uri)
+  "Returns a base64-encoded string converted from octets in INPUT."
+  (check-type input (vector (unsigned-byte 8)))
+  (let ((encoded (cl-base64:usb8-array-to-base64-string input)))
+    (if uri
+        (urlize encoded)
         encoded)))
