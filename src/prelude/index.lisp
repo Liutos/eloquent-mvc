@@ -47,6 +47,11 @@
                                &optional timezone)
   (:documentation "Constructs a string representation of TIMESTAMP according to FORMAT and write to DEST."))
 
+(defmethod format-timestring (dest (timestamp (eql :now)) format
+                              &optional timezone)
+  "Constructs a string represents current time in FORMAT, and writes it to DEST."
+  (format-timestring dest (local-time:now) format timezone))
+
 (defmethod format-timestring (dest timestamp format
                               &optional timezone)
   "Behave as LOCAL-TIME:FORMAT-TIMESTRING."
