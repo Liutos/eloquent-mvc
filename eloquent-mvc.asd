@@ -11,6 +11,7 @@
                (:version #:clack "2.0.0")
                #:do-urlencode
                (:version #:flexi-streams "1.0.15")
+               #:ironclad
                (:version #:local-time "1.0.6")
                (:version #:optima "1.0")
                (:version #:quickproject "1.2.2")
@@ -25,6 +26,10 @@
                         :components ((:module "prelude"
                                               :serial t
                                               :components ((:module "base64"
+                                                                    :serial t
+                                                                    :components ((:file "package")
+                                                                                 (:file "export")))
+                                                           (:module "jwt"
                                                                     :serial t
                                                                     :components ((:file "package")
                                                                                  (:file "export")))
