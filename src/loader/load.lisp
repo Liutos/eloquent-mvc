@@ -58,7 +58,9 @@ If BEFORE-HOOK is a function, it will be invoked before the server started."
         (funcall before-hook config))
       (setf (gethash key *apps*)
             (start-server config (eloquent.mvc.dispatcher:make-handler config middlewares)))
-      (let ((jobs-file (eloquent.mvc.config:get-cron-jobs config)))
+      (let ((jobs-file (eloquent.mvc.config:get-cron-jobs config))
+            (log-file (eloquent.mvc.config:get-cron-log config)))
+        (setf cl-cron:*cron-log-file* log-file)
         (start-cron jobs-file)))))
 
 (defun reload (directory)
