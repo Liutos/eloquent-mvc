@@ -52,6 +52,12 @@
   "Constructs a string represents current time in FORMAT, and writes it to DEST."
   (format-timestring dest (local-time:now) format timezone))
 
+(defmethod format-timestring (dest (timestamp integer) format
+                              &optional timezone)
+  "Writes a string represents TIMESTAMP in FORMAT to DEST. The TIMESTAMP is the milliseconds from Epoch time."
+  (let ((seconds (truncate timestamp 1000)))
+    (format-timestring dest (local-time:unix-to-timestamp seconds) format timezone)))
+
 (defmethod format-timestring (dest timestamp format
                               &optional timezone)
   "Behave as LOCAL-TIME:FORMAT-TIMESTRING."
