@@ -16,7 +16,8 @@
 
   (pushnew '#:eloquent-mvc depends-on)
   (let* ((application-root (namestring directory))
-         (log-directory (namestring (merge-pathnames "log/" application-root))))
+         (log-directory (namestring (merge-pathnames "log/" application-root)))
+         (project-name (pathname-name directory)))
     (quickproject:make-project
      directory
      :author (uiop:getenv "USERNAME")
@@ -24,4 +25,5 @@
      :template-directory (merge-pathnames "src/project/template/"
                                           (asdf:system-source-directory :eloquent-mvc))
      :template-parameters (list :application-root application-root
-                                :log-directory log-directory))))
+                                :log-directory log-directory
+                                :project-name project-name))))
