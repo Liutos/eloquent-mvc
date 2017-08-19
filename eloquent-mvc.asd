@@ -28,22 +28,12 @@
             ((:module "base"
                       :serial t
                       :components
-                      ((:module "base64"
-                                :serial t
-                                :components
-                                ((:file "package")
-                                 (:file "export")))
-                       (:module "jwt"
-                                :serial t
-                                :components
-                                ((:file "package")
-                                 (:file "export")))
-                       (:file "alist" :depends-on ("package"))
-                       (:file "package")
+                      ((:file "alist" :depends-on ("package"))
+                       (:file "cookie" :depends-on ("alist" "package"))
                        (:file "find-symbol")
                        (:file "io" :depends-on ("package" "split"))
                        (:file "make-keyword")
-                       (:file "parse-cookie-string" :depends-on ("alist" "package"))
+                       (:file "package")
                        (:file "split")
                        (:file "time" :depends-on ("package"))
                        (:file "uri" :depends-on ("alist" "package"))

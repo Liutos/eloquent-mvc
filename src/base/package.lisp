@@ -9,14 +9,18 @@
            #:decode-form-to-alist
            #:decode-json-to-alist
            #:encode-alist-to-json
+           ;; cookie
+           #:parse-cookie-string
 
-           #:format-timestring
            #:find-symbol*
            #:make-keyword
+           ;; time
+           #:format-timestring
            #:now
-           #:parse-cookie-string
+           ;; io
            #:read-file-string
            #:read-lines
+
            #:split
            ;; uri
            #:parse-query-string
