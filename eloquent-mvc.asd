@@ -30,11 +30,10 @@
                       :components
                       ((:file "alist" :depends-on ("package"))
                        (:file "cookie" :depends-on ("alist" "package"))
-                       (:file "find-symbol")
                        (:file "io" :depends-on ("package" "split"))
-                       (:file "make-keyword")
                        (:file "package")
                        (:file "split")
+                       (:file "symbol" :depends-on ("package" "split"))
                        (:file "time" :depends-on ("package"))
                        (:file "uri" :depends-on ("alist" "package"))
                        (:file "index")))
