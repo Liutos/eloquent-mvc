@@ -46,8 +46,8 @@
                        (:file "read-file-string")
                        (:file "split")
                        (:file "read-lines")
+                       (:file "time" :depends-on ("package"))
                        (:file "uri" :depends-on ("alist" "package"))
-                       (:file "now")
                        (:file "index")))
              (:module "cli"
                       :components
