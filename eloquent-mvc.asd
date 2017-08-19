@@ -21,97 +21,120 @@
                (:version #:trivial-backtrace "1.1.0")
                (:version #:trivial-types "0.1")
                #:uiop)
-  :components ((:module "src"
-                        :serial t
-                        :components ((:module "prelude"
-                                              :serial t
-                                              :components ((:module "base64"
-                                                                    :serial t
-                                                                    :components ((:file "package")
-                                                                                 (:file "export")))
-                                                           (:module "jwt"
-                                                                    :serial t
-                                                                    :components ((:file "package")
-                                                                                 (:file "export")))
-                                                           (:file "package")
-                                                           (:file "find-symbol")
-                                                           (:file "make-keyword")
-                                                           (:file "read-file-string")
-                                                           (:file "split")
-                                                           (:file "string-to-alist")
-                                                           (:file "read-lines")
-                                                           (:file "urldecode")
-                                                           (:file "parse-cookie-string")
-                                                           (:file "parse-query-string")
-                                                           (:file "string-assoc")
-                                                           (:file "now")
-                                                           (:file "index")))
-                                     (:module "config"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "config")
-                                                           (:file "parse")))
-                                     (:module "request"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "env-to-request")
-                                                           (:file "get-cookie")
-                                                           (:file "get-header")
-                                                           (:file "http-request")
-                                                           (:file "request")))
-                                     (:module "response"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "encoder")
-                                                           (:file "response")
-                                                           (:file "response-to-list")
-                                                           (:file "respond")))
-                                     (:module "logger"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "log")
-                                                           (:file "init")
-                                                           (:file "format")))
-                                     (:module "router"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "rule")
-                                                           (:file "router")
-                                                           (:file "index")))
-                                     (:module "middleware"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "index")
-                                                           (:file "access-log")
-                                                           (:file "apply-matched-rule")
-                                                           (:file "compress")
-                                                           (:file "fill-template")
-                                                           (:file "handle-error")
-                                                           (:file "not-found")
-                                                           (:file "parse")
-                                                           (:file "parse-body")
-                                                           (:file "set-matched-rule")
-                                                           (:file "static-file")))
-                                     (:module "dispatcher"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "make-handler")))
-                                     (:module "loader"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "cron")
-                                                           (:file "server")
-                                                           (:file "load")))
-                                     (:module "controller"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "alist-bind")
-                                                           (:file "form-bind")
-                                                           (:file "json-body-bind")
-                                                           (:file "query-string-bind")
-                                                           (:file "url-bind")))
-                                     (:module "project"
-                                              :serial t
-                                              :components ((:file "package")
-                                                           (:file "index")))
-                                     (:file "package")))))
+  :components
+  ((:module "src"
+            :serial t
+            :components
+            ((:module "base"
+                      :serial t
+                      :components
+                      ((:module "base64"
+                                :serial t
+                                :components
+                                ((:file "package")
+                                 (:file "export")))
+                       (:module "jwt"
+                                :serial t
+                                :components
+                                ((:file "package")
+                                 (:file "export")))
+                       (:file "package")
+                       (:file "find-symbol")
+                       (:file "make-keyword")
+                       (:file "read-file-string")
+                       (:file "split")
+                       (:file "string-to-alist")
+                       (:file "read-lines")
+                       (:file "urldecode")
+                       (:file "parse-cookie-string")
+                       (:file "parse-query-string")
+                       (:file "string-assoc")
+                       (:file "now")
+                       (:file "index")))
+             (:module "cli"
+                      :components
+                      ((:module "project"
+                                :serial t
+                                :components
+                                ((:file "package")
+                                 (:file "index")))))
+             (:module "config"
+                      :serial t
+                      :components
+                      ((:file "package")
+                       (:file "config")
+                       (:file "parse")))
+             (:module "http"
+                      :components
+                      ((:module "request"
+                                :serial t
+                                :components
+                                ((:file "package")
+                                 (:file "env-to-request")
+                                 (:file "get-cookie")
+                                 (:file "get-header")
+                                 (:file "http-request")
+                                 (:file "request")))
+                       (:module "response"
+                                :serial t
+                                :components
+                                ((:file "package")
+                                 (:file "encoder")
+                                 (:file "response")
+                                 (:file "response-to-list")
+                                 (:file "respond")))
+                       (:module "router"
+                                :serial t
+                                :components
+                                ((:file "package")
+                                 (:file "rule")
+                                 (:file "router")
+                                 (:file "index")))))
+             (:module "logger"
+                      :serial t
+                      :components
+                      ((:file "package")
+                       (:file "log")
+                       (:file "init")
+                       (:file "format")))
+             (:module "contrib"
+                      :components
+                      ((:module "middleware"
+                                :serial t
+                                :components
+                                ((:file "package")
+                                 (:file "index")
+                                 (:file "access-log")
+                                 (:file "apply-matched-rule")
+                                 (:file "compress")
+                                 (:file "fill-template")
+                                 (:file "handle-error")
+                                 (:file "not-found")
+                                 (:file "parse")
+                                 (:file "parse-body")
+                                 (:file "set-matched-rule")
+                                 (:file "static-file")))))
+             (:module "server"
+                      :components
+                      ((:module "dispatcher"
+                                :serial t
+                                :components
+                                ((:file "package")
+                                 (:file "make-handler")))
+                       (:module "loader"
+                                :serial t
+                                :components
+                                ((:file "package")
+                                 (:file "cron")
+                                 (:file "server")
+                                 (:file "load")))))
+             (:module "mvc"
+                      :serial t
+                      :components
+                      ((:file "package")
+                       (:file "alist-bind")
+                       (:file "form-bind")
+                       (:file "json-body-bind")
+                       (:file "query-string-bind")
+                       (:file "url-bind")))
+             (:file "package")))))
