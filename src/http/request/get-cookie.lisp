@@ -8,4 +8,4 @@
     (when (null cookie-string)
       (return-from get-cookie nil))
     (let ((cookie (eloquent.mvc.prelude:parse-cookie-string cookie-string)))
-      (eloquent.mvc.prelude:string-assoc field cookie))))
+      (eloquent.mvc.base:alist-get cookie field))))

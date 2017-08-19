@@ -48,7 +48,6 @@
                        (:file "urldecode")
                        (:file "parse-cookie-string")
                        (:file "parse-query-string")
-                       (:file "string-assoc")
                        (:file "now")
                        (:file "index")))
              (:module "cli"

@@ -27,7 +27,7 @@ The arguments above will be CONSed and passed to CL:APPLY for invoking."
     (flet ((aux (binding)
            (destructuring-bind (var field) binding
              (list (alexandria:make-keyword var)
-                   (eloquent.mvc.prelude:string-assoc field query-params)))))
+                   (eloquent.mvc.base:alist-get query-params field)))))
       (alexandria:mappend #'aux (get action :query-string-bind)))))
 
 (defun compute-url-params (action request)
