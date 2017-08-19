@@ -26,17 +26,16 @@
             :serial t
             :components
             ((:module "base"
-                      :serial t
                       :components
-                      ((:file "alist" :depends-on ("package"))
-                       (:file "cookie" :depends-on ("alist" "package"))
-                       (:file "io" :depends-on ("package" "split"))
-                       (:file "package")
-                       (:file "split")
-                       (:file "symbol" :depends-on ("package" "split"))
+                      ((:file "package")
+                       (:file "alist" :depends-on ("package"))
+                       (:file "cookie" :depends-on ("alist"))
+                       (:file "index" :depends-on ("alist"))
+                       (:file "io" :depends-on ("split"))
+                       (:file "split" :depends-on ("package"))
+                       (:file "symbol" :depends-on ("split"))
                        (:file "time" :depends-on ("package"))
-                       (:file "uri" :depends-on ("alist" "package"))
-                       (:file "index")))
+                       (:file "uri" :depends-on ("alist"))))
              (:module "cli"
                       :components
                       ((:module "project"
