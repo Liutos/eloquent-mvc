@@ -5,7 +5,7 @@
   (check-type query-string (or null string))
   (if (null query-string)
       '()
-      (let ((alist (eloquent.mvc.prelude:string-to-alist query-string #\& #\=)))
+      (let ((alist (decode-form-to-alist query-string #\& #\=)))
         (mapcar #'(lambda (pair)
                     (destructuring-bind (head . tail) pair
                       (cons head (urldecode tail))))

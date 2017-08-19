@@ -16,7 +16,7 @@
              (make-binding (binding)
                (destructuring-bind (var field &rest args) binding
                  `(,var ,(apply #'wrap-value
-                                `(eloquent.mvc.prelude:string-assoc ,field ,alist)
+                                `(eloquent.mvc.base:alist-get ,alist ,field)
                                 :path field
                                 args)))))
       (let ((bindings (mapcar #'make-binding bindings)))

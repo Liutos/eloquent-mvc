@@ -4,8 +4,9 @@
   (:export #:alist-bind
            #:alist-bind-error
            #:alist-bind-error-message
-           ;; json
+           ;; alist
            #:alist-get
+           #:decode-form-to-alist
            #:decode-json-to-alist
            #:encode-alist-to-json
 
@@ -17,8 +18,6 @@
            #:read-file-string
            #:read-lines
            #:split
-           #:string-assoc
-           #:string-to-alist
            ;; uri
            #:parse-query-string
            #:urldecode

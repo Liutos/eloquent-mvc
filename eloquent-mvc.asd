@@ -38,15 +38,15 @@
                                 :components
                                 ((:file "package")
                                  (:file "export")))
+                       (:file "alist" :depends-on ("package"))
                        (:file "package")
                        (:file "find-symbol")
                        (:file "make-keyword")
+                       (:file "parse-cookie-string" :depends-on ("alist" "package"))
                        (:file "read-file-string")
                        (:file "split")
-                       (:file "string-to-alist")
                        (:file "read-lines")
-                       (:file "uri")
-                       (:file "parse-cookie-string")
+                       (:file "uri" :depends-on ("alist" "package"))
                        (:file "now")
                        (:file "index")))
              (:module "cli"
