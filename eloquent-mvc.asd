@@ -45,9 +45,8 @@
                        (:file "split")
                        (:file "string-to-alist")
                        (:file "read-lines")
-                       (:file "urldecode")
+                       (:file "uri")
                        (:file "parse-cookie-string")
-                       (:file "parse-query-string")
                        (:file "now")
                        (:file "index")))
              (:module "cli"

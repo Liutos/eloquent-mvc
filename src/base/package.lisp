@@ -14,10 +14,12 @@
            #:make-keyword
            #:now
            #:parse-cookie-string
-           #:parse-query-string
            #:read-file-string
            #:read-lines
            #:split
            #:string-assoc
            #:string-to-alist
-           #:urldecode))
+           ;; uri
+           #:parse-query-string
+           #:urldecode
+           #:urlencode))
