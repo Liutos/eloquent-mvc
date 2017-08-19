@@ -1,11 +1,5 @@
 (in-package #:eloquent.mvc.prelude)
 
-(defun decode-json-from-string (json-string)
-  "Decodes JSON-STRING, keys reserved as string but not keyword."
-  (let ((cl-json:*identifier-name-to-key* #'identity)
-        (cl-json:*json-identifier-name-to-lisp* #'identity))
-    (cl-json:decode-json-from-string json-string)))
-
 (defun string-assoc (item alist
                      &rest args
                      &key

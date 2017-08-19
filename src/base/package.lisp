@@ -9,7 +9,6 @@
            #:decode-json-to-alist
            #:encode-alist-to-json
 
-           #:decode-json-from-string
            #:format-timestring
            #:find-symbol*
            #:make-keyword

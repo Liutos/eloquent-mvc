@@ -10,7 +10,7 @@
 
 (defun parse-json-body (string-body)
   (handler-case
-      (eloquent.mvc.prelude:decode-json-from-string string-body)
+      (eloquent.mvc.base:decode-json-to-alist string-body)
     (cl-json:json-syntax-error (e)
       (declare (ignorable e))
       (error 'eloquent.mvc.response:http-compatible-error
