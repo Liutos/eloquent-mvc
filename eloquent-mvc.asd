@@ -42,14 +42,15 @@
                                 :serial t
                                 :components
                                 ((:file "package")
-                                 (:file "index"))))
-                      :depends-on ("base"))
+                                 (:file "index")))
+                       (:file "cli"))
+                      :depends-on ("mvc"))
              (:module "http"
                       :components
                       ((:file "request")
                        (:file "response")
                        (:file "router" :depends-on ("request")))
-                      :depends-on ("cli"))
+                      :depends-on ("base"))
              (:module "contrib"
                       :components
                       ((:module "middleware"
@@ -92,5 +93,4 @@
                        (:file "json-body-bind")
                        (:file "query-string-bind")
                        (:file "url-bind"))
-                      :depends-on ("server"))
-             (:file "package" :depends-on ("mvc"))))))
+                      :depends-on ("server"))))))
