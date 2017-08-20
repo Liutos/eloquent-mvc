@@ -25,7 +25,8 @@
   ((:module "src"
             :serial t
             :components
-            ((:module "base"
+            ((:file "config")
+             (:module "base"
                       :components
                       ((:file "package")
                        (:file "alist" :depends-on ("package"))
@@ -42,12 +43,6 @@
                                 :components
                                 ((:file "package")
                                  (:file "index")))))
-             (:module "config"
-                      :serial t
-                      :components
-                      ((:file "package")
-                       (:file "config")
-                       (:file "parse")))
              (:module "http"
                       :components
                       ((:module "request"

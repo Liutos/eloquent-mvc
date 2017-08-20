@@ -1,4 +1,21 @@
+(defpackage #:eloquent.mvc.config
+  (:use #:cl)
+  (:shadow #:get)
+  (:export #:<config>
+           #:*config*
+           #:parse
+           #:get
+           #:get-application-root
+           #:get-cron-jobs
+           #:get-cron-log
+           #:get-log-directory
+           #:get-server-port
+           #:get-server-server
+           #:get-template-directory))
+
 (in-package #:eloquent.mvc.config)
+
+;;; export
 
 (defclass <config> ()
   ((base :accessor config-base
@@ -22,21 +39,41 @@
                (format stream "Invalid value \"~A\" for configuration \"~A\""
                        value path)))))
 
+(defvar *config* nil
+  "The object contains the runtime configuration.")
+
+(defgeneric parse (config-path)
+  (:documentation "Reads file content from CONFIG-PATH, one or many, and returns an instance contains configurations."))
+
+(defmethod parse ((config-paths list))
+  "Read content from many files specified in CONFIG-PATHS, embed one into another, and returns a single instance contains all the configurations."
+  (labels ((aux (base rest)
+             (cond ((null rest) base)
+                   (t (let* ((filename (first rest))
+                             (config (parse filename)))
+                        (setf (config-base config) base)
+                        (aux config (rest rest)))))))
+    (aux nil config-paths)))
+
+(defmethod parse ((filename pathname))
+  "Read content from a file specified by FILENAME, parse it and return the parsing result."
+  (let* ((env `(:user-homedir-pathname ,(user-homedir-pathname)))
+         (text (cl-emb:execute-emb filename :env env))
+         (content (cl-yaml:parse text)))
+    (make-instance '<config>
+                   :content content)))
+
 (defun get (config section-name option-name)
   "Return the raw value belongs to key OPTION-NAME from section SECTION-NAME in CONFIG."
-  (declare (type string option-name section-name))
-  (declare (type <config> config))
+  (check-type config <config>)
+  (check-type section-name string)
+  (check-type option-name string)
   (with-slots (content) config
     (multiple-value-bind (section found)
         (gethash section-name content)
       (cond (found (gethash option-name section))
             ((config-base config)
              (get (config-base config) section-name option-name))))))
-
-;;; EXPORT
-
-(defvar *config* nil
-  "The object contains the runtime configuration.")
 
 (defun get-application-root (config)
   "Return the project's root directory specified in CONFIG."
