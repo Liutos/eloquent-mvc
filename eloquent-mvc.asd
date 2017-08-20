@@ -30,7 +30,6 @@
                       ((:file "package")
                        (:file "alist" :depends-on ("package"))
                        (:file "cookie" :depends-on ("alist"))
-                       (:file "index" :depends-on ("alist"))
                        (:file "io" :depends-on ("split"))
                        (:file "split" :depends-on ("package"))
                        (:file "symbol" :depends-on ("split"))
