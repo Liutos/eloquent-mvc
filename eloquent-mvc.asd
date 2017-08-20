@@ -25,7 +25,7 @@
   ((:module "src"
             :components
             ((:file "config")
-             (:file "logger" :depends-on ("base" "config"))
+             (:file "logger" :depends-on ("base"))
              (:file "middleware")
              (:module "base"
                       :components
@@ -52,12 +52,12 @@
                        (:file "response")
                        (:file "router" :depends-on ("request")))
                       :depends-on ("base"))
+             (:module "mvc"
+                      :components
+                      ((:file "controller"))
+                      :depends-on ("http"))
              (:module "server"
                       :components
                       ((:file "dispatcher")
                        (:file "loader" :depends-on ("dispatcher")))
-                      :depends-on ("config" "logger" "middleware" "http"))
-             (:module "mvc"
-                      :components
-                      ((:file "controller"))
-                      :depends-on ("http"))))))
+                      :depends-on ("config" "logger" "middleware" "http"))))))

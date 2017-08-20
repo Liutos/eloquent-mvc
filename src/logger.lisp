@@ -78,18 +78,17 @@ The old log file would be renamed if it was created not at current hour."
                             :if-does-not-exist :create)
       (apply #'cl:format stream control-string format-arguments))))
 
-(defun init (config)
+(defun init (&key directory)
   "Initialize the state of logging system."
-  (check-type config eloquent.mvc.config:<config>)
-  (let ((directory (eloquent.mvc.config:get-log-directory config)))
-    (restart-case
-        (unless (uiop:directory-exists-p directory)
-          (error 'not-directory-error :pathname directory))
-      (create-log-directory ()
-        :report (lambda (stream)
-                  (cl:format stream "Create the directory ~A" directory))
-        (ensure-directories-exist directory)))
-    (let ((log (make-instance '<log>
-                              :directory directory)))
-      (setf *log* log)
-      log)))
+  (check-type directory pathname)
+  (restart-case
+      (unless (uiop:directory-exists-p directory)
+        (error 'not-directory-error :pathname directory))
+    (create-log-directory ()
+      :report (lambda (stream)
+                (cl:format stream "Create the directory ~A" directory))
+      (ensure-directories-exist directory)))
+  (let ((log (make-instance '<log>
+                            :directory directory)))
+    (setf *log* log)
+    log))

@@ -62,7 +62,8 @@ If BEFORE-HOOK is a function, it will be invoked before the server started."
     (let ((config (eloquent.mvc.config:parse config-paths))
           (key (namestring directory))
           (middlewares (eloquent.mvc.middleware:parse middlewares-path)))
-      (eloquent.mvc.logger:init config)
+      (eloquent.mvc.logger:init
+       :directory (eloquent.mvc.config:get-log-directory config))
       (eloquent.mvc.router:init router-path)
       (when before-hook
         (funcall before-hook config))
