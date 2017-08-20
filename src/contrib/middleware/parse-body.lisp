@@ -1,4 +1,4 @@
-(in-package #:eloquent.mvc.middleware)
+(in-package #:eloquent.mvc.contrib)
 
 (defun get-content-type (request)
   "Extract the real Content-Type from REQUEST, removing the optional charset part."

@@ -1,4 +1,4 @@
-(in-package #:eloquent.mvc.middleware)
+(in-package #:eloquent.mvc.contrib)
 
 (defun error-log (e)
   "Write the message and backtrace of E to error log file."

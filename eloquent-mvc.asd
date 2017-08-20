@@ -26,6 +26,7 @@
             :components
             ((:file "config")
              (:file "logger" :depends-on ("base" "config"))
+             (:file "middleware")
              (:module "base"
                       :components
                       ((:file "package")
@@ -53,20 +54,18 @@
                       :depends-on ("base"))
              (:module "contrib"
                       :components
-                      ((:module "middleware"
-                                :serial t
+                      ((:file "package")
+                       (:module "middleware"
                                 :components
-                                ((:file "package")
-                                 (:file "index")
-                                 (:file "access-log")
+                                ((:file "access-log")
                                  (:file "compress")
                                  (:file "fill-template")
                                  (:file "handle-error")
                                  (:file "not-found")
-                                 (:file "parse")
                                  (:file "parse-body")
-                                 (:file "static-file"))))
-                      :depends-on ("http"))
+                                 (:file "static-file"))
+                                :depends-on ("package")))
+                      :depends-on ("http" "middleware"))
              (:module "server"
                       :components
                       ((:file "dispatcher")

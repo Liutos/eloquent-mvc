@@ -1,3 +1,8 @@
+(defpackage #:eloquent.mvc.middleware
+  (:use #:cl)
+  (:export #:*middlewares*
+           #:parse))
+
 (in-package #:eloquent.mvc.middleware)
 
 (define-condition symbol-not-export-error (error)
@@ -22,7 +27,9 @@
       (unless (eql exportp :external)
         (error 'symbol-not-export-error :package package :symbol name)))))
 
-;;; EXPORT
+;;; export
+
+(defvar *middlewares* nil)
 
 (defun parse (file)
   "Read the middlewares specified in FILE."

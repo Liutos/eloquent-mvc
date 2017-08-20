@@ -1,4 +1,4 @@
-(in-package #:eloquent.mvc.middleware)
+(in-package #:eloquent.mvc.contrib)
 
 (defun make-static-file (path-info prefix root)
   (let ((path (remove-prefix prefix path-info)))

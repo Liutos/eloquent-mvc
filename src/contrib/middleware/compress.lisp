@@ -1,4 +1,4 @@
-(in-package #:eloquent.mvc.middleware)
+(in-package #:eloquent.mvc.contrib)
 
 (defun compress (request next &key)
   "Compress the response body into gzip format when available"

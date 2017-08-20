@@ -1,4 +1,4 @@
-(in-package #:eloquent.mvc.middleware)
+(in-package #:eloquent.mvc.contrib)
 
 (defun make-time-local (moment)
   (eloquent.mvc.prelude:format-timestring
