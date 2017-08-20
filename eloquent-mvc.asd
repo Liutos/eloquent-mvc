@@ -66,4 +66,4 @@
                        (:file "json-body-bind")
                        (:file "query-string-bind")
                        (:file "url-bind"))
-                      :depends-on ("server"))))))
+                      :depends-on ("http" "server"))))))
