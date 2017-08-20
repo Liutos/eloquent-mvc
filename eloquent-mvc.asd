@@ -46,30 +46,9 @@
                       :depends-on ("base"))
              (:module "http"
                       :components
-                      ((:module "request"
-                                :serial t
-                                :components
-                                ((:file "package")
-                                 (:file "env-to-request")
-                                 (:file "get-cookie")
-                                 (:file "get-header")
-                                 (:file "http-request")
-                                 (:file "request")))
-                       (:module "response"
-                                :serial t
-                                :components
-                                ((:file "package")
-                                 (:file "encoder")
-                                 (:file "response")
-                                 (:file "response-to-list")
-                                 (:file "respond")))
-                       (:module "router"
-                                :serial t
-                                :components
-                                ((:file "package")
-                                 (:file "rule")
-                                 (:file "router")
-                                 (:file "index"))))
+                      ((:file "request")
+                       (:file "response")
+                       (:file "router" :depends-on ("request")))
                       :depends-on ("cli"))
              (:module "contrib"
                       :components
