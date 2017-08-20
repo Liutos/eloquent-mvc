@@ -59,23 +59,17 @@
                                 ((:file "package")
                                  (:file "index")
                                  (:file "access-log")
-                                 (:file "apply-matched-rule")
                                  (:file "compress")
                                  (:file "fill-template")
                                  (:file "handle-error")
                                  (:file "not-found")
                                  (:file "parse")
                                  (:file "parse-body")
-                                 (:file "set-matched-rule")
                                  (:file "static-file"))))
                       :depends-on ("http"))
              (:module "server"
                       :components
-                      ((:module "dispatcher"
-                                :serial t
-                                :components
-                                ((:file "package")
-                                 (:file "make-handler")))
+                      ((:file "dispatcher")
                        (:module "loader"
                                 :serial t
                                 :components
