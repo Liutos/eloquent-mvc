@@ -45,7 +45,7 @@
                                 ((:file "package")
                                  (:file "index")))
                        (:file "cli"))
-                      :depends-on ("mvc"))
+                      :depends-on ("server"))
              (:module "http"
                       :components
                       ((:file "request")
@@ -58,12 +58,6 @@
                        (:file "loader" :depends-on ("dispatcher")))
                       :depends-on ("config" "logger" "middleware" "http"))
              (:module "mvc"
-                      :serial t
                       :components
-                      ((:file "package")
-                       (:file "alist-bind")
-                       (:file "form-bind")
-                       (:file "json-body-bind")
-                       (:file "query-string-bind")
-                       (:file "url-bind"))
-                      :depends-on ("http" "server"))))))
+                      ((:file "controller"))
+                      :depends-on ("http"))))))
