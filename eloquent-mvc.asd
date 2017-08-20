@@ -52,20 +52,6 @@
                        (:file "response")
                        (:file "router" :depends-on ("request")))
                       :depends-on ("base"))
-             (:module "contrib"
-                      :components
-                      ((:file "package")
-                       (:module "middleware"
-                                :components
-                                ((:file "access-log")
-                                 (:file "compress")
-                                 (:file "fill-template")
-                                 (:file "handle-error")
-                                 (:file "not-found")
-                                 (:file "parse-body")
-                                 (:file "static-file"))
-                                :depends-on ("package")))
-                      :depends-on ("http" "middleware"))
              (:module "server"
                       :components
                       ((:file "dispatcher")
@@ -76,7 +62,7 @@
                                  (:file "cron")
                                  (:file "server")
                                  (:file "load"))))
-                      :depends-on ("contrib"))
+                      :depends-on ("middleware"))
              (:module "mvc"
                       :serial t
                       :components
