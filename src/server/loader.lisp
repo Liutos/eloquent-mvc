@@ -1,3 +1,10 @@
+(defpackage #:eloquent.mvc.loader
+  (:use #:cl)
+  (:shadow #:load)
+  (:export #:load
+           #:reload
+           #:unload))
+
 (in-package #:eloquent.mvc.loader)
 
 (define-condition project-not-found-error ()
@@ -34,7 +41,10 @@
 (defun make-router-path (directory)
   (merge-pathnames "config/router.lisp" directory))
 
-;;; EXPORT
+;;; export
+
+(defvar *jobs* nil
+  "A list contains all the periodic jobs loaded by START-CRON.")
 
 (defun load (directory
              &key before-hook)
@@ -68,6 +78,70 @@ If BEFORE-HOOK is a function, it will be invoked before the server started."
   (check-type directory pathname)
   (unload directory)
   (load directory))
+
+(defun start-cron (jobs-file)
+  "Read file at path JOBS-FILE, parse it as a crontab, and start to call functions periodic."
+  (check-type jobs-file (or null pathname))
+  (labels ((regex-capture-1 (regex target-string)
+             (let ((captures (nth-value 1 (cl-ppcre:scan-to-strings regex target-string))))
+               (aref captures 0)))
+           (parse (jobs-file)
+             (check-type jobs-file pathname)
+             (let ((lines (eloquent.mvc.prelude:read-lines jobs-file)))
+               (mapcar #'parse-line lines)))
+           (parse-line (line)
+             (check-type line string)
+             (destructuring-bind (min hour day-of-month month day-of-week function-symbol)
+                 (eloquent.mvc.prelude:split line #\Space)
+               (let ((sym (eloquent.mvc.prelude:find-symbol* function-symbol))
+                     (args (append (parse-period min :minute :step-min)
+                                   (parse-period hour :hour :step-hour)
+                                   (parse-period day-of-month :day-of-month :step-dom)
+                                   (parse-period month :month :step-month)
+                                   (parse-period day-of-week :day-of-week :step-dow))))
+                 (cons sym args))))
+           (parse-period (period mode-key step-key)
+             (check-type period string)
+             (check-type mode-key keyword)
+             (check-type step-key keyword)
+             (cond ((string= period "*")
+                    nil)
+                   ((cl-ppcre:scan "\\*/\\d+" period)
+                    (let ((step (regex-capture-1 "\\*/(\\d+)" period)))
+                      (list step-key (parse-integer step))))
+                   ((cl-ppcre:scan "\\d+" period)
+                    (let ((step (regex-capture-1 "(\\d+)" period)))
+                      (list mode-key (parse-integer step))))
+                   (t (error "Don't know how to parse period ~A" period)))))
+    (when (null jobs-file)
+      (return-from start-cron))
+    (let ((jobs (parse jobs-file)))
+      (when (null jobs)
+        (return-from start-cron))
+
+      (dolist (args jobs)
+        (let ((job-id (apply #'cl-cron:make-cron-job args)))
+          (push args *jobs*)
+          (push job-id *jobs*)))
+      (let ((cl-cron:*cron-load-file* nil))
+        (cl-cron:start-cron)))))
+
+(defun start-server (config app)
+  (let ((port (eloquent.mvc.config:get-server-port config))
+        (server (eloquent.mvc.config:get-server-server config)))
+    (clack:clackup app
+                   :port port
+                   :server server)))
+
+(defun stop-cron ()
+  "Stop all jobs stored in *JOBS*."
+  (loop
+     :for job-id :in *jobs* :by #'cddr
+     :do (cl-cron:delete-cron-job job-id))
+  (cl-cron:stop-cron))
+
+(defun stop-server (handler)
+  (clack:stop handler))
 
 (defun unload (directory
                &key before-hook)

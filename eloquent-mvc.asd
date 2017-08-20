@@ -55,14 +55,8 @@
              (:module "server"
                       :components
                       ((:file "dispatcher")
-                       (:module "loader"
-                                :serial t
-                                :components
-                                ((:file "package")
-                                 (:file "cron")
-                                 (:file "server")
-                                 (:file "load"))))
-                      :depends-on ("middleware"))
+                       (:file "loader" :depends-on ("dispatcher")))
+                      :depends-on ("config" "logger" "middleware" "http"))
              (:module "mvc"
                       :serial t
                       :components
