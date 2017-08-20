@@ -13,8 +13,12 @@
   (let ((value raw))
     (when type
       (ecase type
-        (:integer (unless (integerp value)
-                    (setf value (parse-integer value))))))
+        (:integer (etypecase value
+                    (integer)
+                    (null)
+                    (string (if (string/= value "")
+                                (setf value (parse-integer value))
+                                (setf value nil)))))))
     (when (and default (null value))
       (setf value default))
     value))
