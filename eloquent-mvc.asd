@@ -23,9 +23,9 @@
                #:uiop)
   :components
   ((:module "src"
-            :serial t
             :components
             ((:file "config")
+             (:file "logger" :depends-on ("base" "config"))
              (:module "base"
                       :components
                       ((:file "package")
@@ -42,7 +42,8 @@
                                 :serial t
                                 :components
                                 ((:file "package")
-                                 (:file "index")))))
+                                 (:file "index"))))
+                      :depends-on ("base"))
              (:module "http"
                       :components
                       ((:module "request"
@@ -68,14 +69,8 @@
                                 ((:file "package")
                                  (:file "rule")
                                  (:file "router")
-                                 (:file "index")))))
-             (:module "logger"
-                      :serial t
-                      :components
-                      ((:file "package")
-                       (:file "log")
-                       (:file "init")
-                       (:file "format")))
+                                 (:file "index"))))
+                      :depends-on ("cli"))
              (:module "contrib"
                       :components
                       ((:module "middleware"
@@ -92,7 +87,8 @@
                                  (:file "parse")
                                  (:file "parse-body")
                                  (:file "set-matched-rule")
-                                 (:file "static-file")))))
+                                 (:file "static-file"))))
+                      :depends-on ("http"))
              (:module "server"
                       :components
                       ((:module "dispatcher"
@@ -106,7 +102,8 @@
                                 ((:file "package")
                                  (:file "cron")
                                  (:file "server")
-                                 (:file "load")))))
+                                 (:file "load"))))
+                      :depends-on ("contrib"))
              (:module "mvc"
                       :serial t
                       :components
@@ -115,5 +112,6 @@
                        (:file "form-bind")
                        (:file "json-body-bind")
                        (:file "query-string-bind")
-                       (:file "url-bind")))
-             (:file "package")))))
+                       (:file "url-bind"))
+                      :depends-on ("server"))
+             (:file "package" :depends-on ("mvc"))))))
