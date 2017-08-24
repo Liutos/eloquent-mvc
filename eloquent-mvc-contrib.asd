@@ -7,7 +7,8 @@
             :components
             ((:module "contrib"
                       :components
-                      ((:file "package")
+                      ((:file "helper" :depends-on ("package"))
+                       (:file "package")
                        (:module "middleware"
                                 :components
                                 ((:file "access-log")
@@ -15,6 +16,5 @@
                                  (:file "fill-template")
                                  (:file "handle-error")
                                  (:file "not-found")
-                                 (:file "parse-body")
-                                 (:file "static-file"))
+                                 (:file "parse-body"))
                                 :depends-on ("package"))))))))
