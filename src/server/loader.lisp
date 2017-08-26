@@ -100,7 +100,12 @@ If BEFORE-HOOK is a function, it will be invoked before the server started."
                                    (parse-period day-of-month :day-of-month :step-dom)
                                    (parse-period month :month :step-month)
                                    (parse-period day-of-week :day-of-week :step-dow))))
-                 (cons sym args))))
+                 (let ((func (lambda (&rest args)
+                               (handler-case
+                                   (apply sym args)
+                                 (condition (c)
+                                   (warn "~A" c))))))
+                   (cons func args)))))
            (parse-period (period mode-key step-key)
              (check-type period string)
              (check-type mode-key keyword)
