@@ -18,6 +18,7 @@
                (:version #:salza2 "2.0.9")
                (:version #:split-sequence "1.2")
                #:str
+               (:version #:trivial-arguments "1.1.0")
                (:version #:trivial-backtrace "1.1.0")
                (:version #:trivial-types "0.1")
                #:uiop)

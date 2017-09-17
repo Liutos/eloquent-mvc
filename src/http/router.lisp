@@ -21,6 +21,21 @@
                  (matchp request rule))
              rules)))
 
+(defun make-initargs (action)
+  "Returns a list of keywords that are specified in ACTION explicitly, or extracted from the first element in ACTION(as a function)."
+  (check-type action list)
+  (destructuring-bind (action . initargs)
+      action
+    (when initargs
+      (return-from make-initargs
+        (mapcar #'alexandria:make-keyword initargs)))
+
+    (let* ((arglist (trivial-arguments:arglist action))
+           (keyword-params
+            (nth-value 3
+                       (alexandria:parse-ordinary-lambda-list arglist))))
+      (mapcar #'caar keyword-params))))
+
 (defun map-components (function components)
   (flet ((aux (component)
            (destructuring-bind (method uri-template action &rest args) component
@@ -105,7 +120,7 @@
     (check-type mode keyword)
     (check-type uri-template string)
     (let ((action (first action))
-          (initargs (mapcar #'alexandria:make-keyword (rest action))))
+          (initargs (make-initargs action)))
       (setf (cl:get action :content-type) content-type
             (cl:get action :initargs) initargs
             (cl:get action :query-string-bind) query-string-bind
