@@ -39,6 +39,13 @@
     (labels ((wrap-value (expr &rest args)
                `(compute-value ,expr ,@args))
              (make-binding (binding)
+               (unless (stringp (cadr binding))
+                 (let ((var (first binding)))
+                   (setf binding
+                         `(,var
+                           ,(string-downcase (symbol-name var))
+                           ,@(rest binding)))))
+
                (destructuring-bind (var field &rest args) binding
                  `(,var ,(apply #'wrap-value
                                 `(eloquent.mvc.base:alist-get ,alist ,field)
