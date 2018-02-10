@@ -15,7 +15,8 @@
                :jonathan
                :local-time
                :split-sequence)
-  :components ((:file "http" :depends-on ("package"))
+  :components ((:file "handler" :depends-on ("package" "router"))
+               (:file "http" :depends-on ("package"))
                (:file "package")
                (:file "router" :depends-on ("http" "package"))
                (:file "server" :depends-on ("http" "package" "router"))
