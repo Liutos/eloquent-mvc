@@ -13,6 +13,16 @@
     (push (list method pattern f path)
           *routes*)))
 
+(defun extract-from-path (env route)
+  (let ((path (path-of env))
+        (pattern (fourth route)))
+    (let ((group-pattern (cl-ppcre:regex-replace-all ":[^/]+" pattern "([^/]+)"))
+          (names (cl-ppcre:all-matches-as-strings ":[^/]+" pattern)))
+      (let ((matches (nth-value 1 (cl-ppcre:scan-to-strings group-pattern path))))
+        (map 'list #'(lambda (name match)
+                       (cons (subseq name 1) match))
+             names matches)))))
+
 (defun find-route (method path)
   (find-if #'(lambda (route)
                (flet ((path= (expect real)
