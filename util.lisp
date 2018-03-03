@@ -7,5 +7,8 @@
         (funcall after c))))
 
 (defun get-current-ts ()
-  (* 1000
-     (local-time:timestamp-to-unix (local-time:now))))
+  (let* ((now (local-time:now))
+         (unix-part (local-time:timestamp-to-unix now))
+         (nsec-part (local-time:nsec-of now)))
+    (+ (* 1000 unix-part)
+       (truncate nsec-part 1000000))))

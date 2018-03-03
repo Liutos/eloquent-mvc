@@ -3,6 +3,7 @@
 (defparameter *middlewares*
   (list
    'response
+   'performance
    'visitor))
 
 (defvar *handler*)
