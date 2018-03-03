@@ -1,6 +1,10 @@
 (in-package :fw)
 
-(defparameter *middlewares* '(visitor))
+(defparameter *middlewares*
+  (list
+   'response
+   'visitor))
+
 (defvar *handler*)
 
 (defun handle (env)

@@ -1,5 +1,34 @@
 (in-package :fw)
 
+(defclass <http-response> ()
+  ((body
+    :accessor body-of
+    :initarg :body
+    :documentation "响应的数据")
+   (code
+    :accessor code-of
+    :initarg :code
+    :type integer
+    :documentation "响应的状态码")
+   (content-type
+    :accessor content-type-of
+    :initarg :content-type
+    :initform nil
+    :type string
+    :documentation "响应内容的类型")
+   (headers
+    :accessor headers-of
+    :initarg :headers
+    :type list
+    :documentation "响应的一系列头部")
+   (to-json-from
+    :accessor to-json-from-of
+    :initarg :to-json-from
+    :initform nil
+    :type keyword
+    :documentation "序列化为JSON字符串时来源数据的格式"))
+  (:documentation "HTTP响应"))
+
 (defmacro http-let (bindings (env &key (parser 'http-body:parse)) &body forms)
   "HTTP-LET ({(var &key default from key type)| var}*) (env &key parser) forms
 
@@ -24,10 +53,10 @@ There are three valid values for FROM:
 (defun content-length-of (env)
   (getf env :content-length))
 
-(defun content-type-of (env)
+(defmethod content-type-of ((env list))
   (getf env :content-type))
 
-(defun headers-of (env)
+(defmethod headers-of ((env list))
   (getf env :headers))
 
 (defun method-of (env)
@@ -85,8 +114,26 @@ There are three valid values for FROM:
                     (cons k v)))
               pairs))))
 
+(defun make-http-response (body code headers)
+  (make-instance '<http-response>
+                 :headers headers
+                 :code code
+                 :body body))
+
 (defun respond-as-json (value &key (from :alist) (code 200) headers)
-  (list
-   code
-   (append headers '(:content-type "application/json"))
-   (list (jonathan:to-json value :from from))))
+  (let ((resp (make-http-response value code headers)))
+    (setf (content-type-of resp) "application/json")
+    (setf (to-json-from-of resp) from)
+    resp))
+
+(defun unwrap (response)
+  (check-type response <http-response>)
+  (with-slots (body code content-type headers)
+      response
+    (when (string= content-type "application/json")
+      (setf body (jonathan:to-json body
+                                   :from (to-json-from-of response)))
+      (setf headers (append headers `(:content-type ,content-type))))
+    (list code
+          headers
+          (list body))))
