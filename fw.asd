@@ -17,6 +17,7 @@
                :split-sequence)
   :components ((:file "handler" :depends-on ("package" "router"))
                (:file "http" :depends-on ("package"))
+               (:file "middleware" :depends-on ("http" "package"))
                (:file "package")
                (:file "router" :depends-on ("http" "package"))
                (:file "server" :depends-on ("http" "package" "router"))

@@ -42,6 +42,9 @@ There are three valid values for FROM:
 (defun raw-body-of (env)
   (getf env :raw-body))
 
+(defun remote-addr-of (env)
+  (getf env :remote-addr))
+
 (defun http-let/parse-binding (body qs url-params &rest args &key default from key (trimp t) type)
   (declare (ignorable key))
   (flet ((get-from-body (&key key)
@@ -82,8 +85,8 @@ There are three valid values for FROM:
                     (cons k v)))
               pairs))))
 
-(defun respond-as-json (code headers value)
+(defun respond-as-json (value &key (from :alist) (code 200) headers)
   (list
    code
    (append headers '(:content-type "application/json"))
-   (list (jonathan:to-json value :from :alist))))
+   (list (jonathan:to-json value :from from))))

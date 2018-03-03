@@ -1,5 +1,6 @@
 (in-package :fw)
 
+(defparameter *middlewares* '(visitor))
 (defvar *handler*)
 
 (defun handle (env)
@@ -13,11 +14,25 @@
             (t
              (setf f #'route-not-found)))
       (handler-case
-          (funcall f env)
+          (let* ((action-caller (lambda (env)
+                                  (funcall f env)))
+                 (middleware-caller (make-middleware-caller *middlewares* action-caller)))
+            (funcall middleware-caller env))
         (condition (c)
           `(500
             (:content-type "text/plain")
             ,(list (format nil "~A" c))))))))
+
+(defun make-middleware-caller (middlewares action-caller)
+  (flet ((make-next (middleware next)
+           (declare (type symbol middleware))
+           (lambda (env)
+             (funcall (symbol-function middleware) env next))))
+    (reduce #'make-next
+            middlewares
+            :from-end t
+            :initial-value action-caller)))
+
 
 (defun start (&key (port 5000))
   (setf *handler*
