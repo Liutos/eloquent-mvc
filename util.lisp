@@ -12,3 +12,9 @@
          (nsec-part (local-time:nsec-of now)))
     (+ (* 1000 unix-part)
        (truncate nsec-part 1000000))))
+
+(defun my-getf (place indicator &optional default)
+  (let ((i (position indicator place)))
+    (if (numberp i)
+        (nth (1+ i) place)
+        default)))

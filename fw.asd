@@ -11,6 +11,7 @@
   :depends-on (:alexandria
                :cl-ppcre
                :clack
+               :clsql
                :http-body
                :jonathan
                :local-time
@@ -18,6 +19,7 @@
   :components ((:file "handler" :depends-on ("package" "router"))
                (:file "http" :depends-on ("package"))
                (:file "middleware" :depends-on ("http" "package"))
+               (:file "mysql" :depends-on ("package" "util"))
                (:file "package")
                (:file "router" :depends-on ("http" "package"))
                (:file "server" :depends-on ("http" "package" "router"))
