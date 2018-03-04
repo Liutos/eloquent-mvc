@@ -74,6 +74,10 @@ There are three valid values for FROM:
 (defun remote-addr-of (env)
   (getf env :remote-addr))
 
+(defun get-header (env name)
+  (let ((headers (headers-of env)))
+    (gethash (string-downcase name) headers)))
+
 (defun http-let/parse-binding (body qs url-params &rest args &key default from key (trimp t) type)
   (declare (ignorable key))
   (flet ((get-from-body (&key key)
