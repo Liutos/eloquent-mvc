@@ -2,14 +2,29 @@
 
 (defun make-element (row columns element-type
                      &key (null-value nil))
-  (ecase element-type
-    (:alist (mapcar #'(lambda (value column)
-                        (cons column (or value null-value)))
-                    row columns))
-    (:plist (mapcan #'(lambda (value column)
-                        (list (intern (string-upcase column) :keyword)
-                              (or value null-value)))
-                    row columns))))
+  (cond ((eq element-type :alist)
+         (mapcar #'(lambda (value column)
+                     (cons column (or value null-value)))
+                 row columns))
+        ((eq element-type :plist)
+         (mapcan #'(lambda (value column)
+                     (list (intern (string-upcase column) :keyword)
+                           (or value null-value)))
+                 row columns))
+        ((and (listp element-type)
+              (eq (first element-type) :instance))
+         (make-element-as-instance (second element-type) columns row))))
+
+(defun make-element-as-instance (class columns row)
+  "根据从数据库中返回的列尝试构造一个实例对象"
+  (let ((args (make-plist columns row)))
+    (apply 'make-instance class `(,@args :allow-other-keys t))))
+
+(defun make-plist (columns values)
+  (mapcan #'(lambda (column value)
+              (list (table-field-to-key column)
+                    value))
+          columns values))
 
 (defun sql-select (&rest args)
   "封装CLSQL:SELECT"
@@ -23,3 +38,17 @@
                   (make-element row columns element-type
                                 :null-value null-value))
               rows))))
+
+(defun table-field-to-key (field)
+  (let ((chars '()))
+    (dotimes (i (length field))
+      (let ((c (char field i)))
+        (cond ((upper-case-p c)
+               (when (not (char= (first chars) #\-))
+                 (push #\- chars))
+               (push c chars))
+              ((char= c #\_)
+               (when (not (char= (first chars) #\-))
+                 (push #\- chars)))
+              (t (push (char-upcase c) chars)))))
+    (intern (concatenate 'string (nreverse chars)) :keyword)))
