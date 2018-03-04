@@ -1,10 +1,6 @@
 (in-package :fw)
 
-(defparameter *middlewares*
-  (list
-   'response
-   'performance
-   'visitor))
+(defparameter *middlewares* '())
 
 (defvar *handler*)
 
@@ -21,8 +17,12 @@
       (handler-case
           (let* ((action-caller (lambda (env)
                                   (funcall f env)))
-                 (middleware-caller (make-middleware-caller *middlewares* action-caller)))
-            (funcall middleware-caller env))
+                 (middleware-caller (make-middleware-caller *middlewares* action-caller))
+                 (result (funcall middleware-caller env)))
+            (typecase result
+              (<http-response>
+               (unwrap result))
+              (t result)))
         (condition (c)
           `(500
             (:content-type "text/plain")
