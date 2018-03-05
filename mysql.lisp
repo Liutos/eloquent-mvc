@@ -28,8 +28,8 @@
 
 (defun sql-select (&rest args)
   "封装CLSQL:SELECT"
-  (let ((element-type (my-getf args :element-type :alist))
-        (null-value (my-getf args :null-value nil)))
+  (let ((element-type (my-getf args :x-element-type :alist))
+        (null-value (my-getf args :x-null-value nil)))
     (multiple-value-bind (rows columns)
         (apply #'clsql:select `(,@args :allow-other-keys t))
       (when (null rows)
