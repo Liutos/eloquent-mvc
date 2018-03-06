@@ -21,6 +21,7 @@
 
 (defun simple-to-json (obj
                        &key
+                         (allow-keys nil)
                          (key-formatter 'camel-case-formatter)
                          (null-value :null))
   (let* ((clz (class-of obj))
@@ -30,6 +31,8 @@
                         slots)))
     (jonathan:with-object
      (dolist (name names)
-       (jonathan:write-key-value
-        (funcall key-formatter (symbol-name name))
-        (or (slot-value obj name) null-value))))))
+       (when (or (null allow-keys)
+                 (position name allow-keys))
+         (jonathan:write-key-value
+          (funcall key-formatter (symbol-name name))
+          (or (slot-value obj name) null-value)))))))
