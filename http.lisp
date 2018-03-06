@@ -19,7 +19,7 @@
    (headers
     :accessor headers-of
     :initarg :headers
-    :type list
+    :type hash-table
     :documentation "响应的一系列头部")
    (to-json-from
     :accessor to-json-from-of
@@ -120,7 +120,7 @@ There are three valid values for FROM:
 
 (defun make-http-response (body code headers)
   (make-instance '<http-response>
-                 :headers headers
+                 :headers (alexandria:plist-hash-table headers)
                  :code code
                  :body body))
 
@@ -130,6 +130,15 @@ There are three valid values for FROM:
     (setf (to-json-from-of resp) from)
     resp))
 
+(defun set-header (response header value)
+  (check-type response <http-response>)
+  (check-type header keyword)
+  (check-type value (or number string))
+  (when (numberp value)
+    (setf value (format nil "~A" value)))
+  (with-slots (headers) response
+    (setf (gethash header headers) value)))
+
 (defun unwrap (response)
   (check-type response <http-response>)
   (with-slots (body code content-type headers)
@@ -137,7 +146,7 @@ There are three valid values for FROM:
     (when (string= content-type "application/json")
       (setf body (jonathan:to-json body
                                    :from (to-json-from-of response)))
-      (setf headers (append headers `(:content-type ,content-type))))
+      (set-header response :content-type content-type))
     (list code
-          headers
+          (alexandria:hash-table-plist headers)
           (list body))))
