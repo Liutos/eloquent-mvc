@@ -10,6 +10,7 @@
   :license "MIT"
   :depends-on (:alexandria
                :cl-ppcre
+               :closer-mop
                :clack
                :clsql
                :http-body
@@ -21,5 +22,6 @@
                (:file "mysql" :depends-on ("package" "util"))
                (:file "package")
                (:file "router" :depends-on ("http" "package"))
+               (:file "serde" :depends-on ("package"))
                (:file "server" :depends-on ("http" "package" "router"))
                (:file "util" :depends-on ("package"))))
