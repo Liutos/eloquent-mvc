@@ -29,15 +29,18 @@
 (defun sql-select (&rest args)
   "封装CLSQL:SELECT"
   (let ((element-type (my-getf args :x-element-type :alist))
-        (null-value (my-getf args :x-null-value nil)))
+        (null-value (my-getf args :x-null-value nil))
+        (singlep (my-getf args :x-singlep nil)))
     (multiple-value-bind (rows columns)
         (apply #'clsql:select `(,@args :allow-other-keys t))
       (when (null rows)
         (return-from sql-select nil))
-      (mapcar #'(lambda (row)
-                  (make-element row columns element-type
-                                :null-value null-value))
-              rows))))
+      (let ((rows
+             (mapcar #'(lambda (row)
+                         (make-element row columns element-type
+                                       :null-value null-value))
+                     rows)))
+        (if singlep (first rows) rows)))))
 
 (defun table-field-to-key (field)
   (let ((chars '()))
