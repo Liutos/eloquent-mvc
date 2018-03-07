@@ -13,11 +13,14 @@
                :closer-mop
                :clack
                :clsql
+               :drakma
+               :flexi-streams
                :http-body
                :jonathan
                :local-time
                :split-sequence)
   :components ((:file "handler" :depends-on ("package" "router"))
+               (:file "hc" :depends-on ("package"))
                (:file "http" :depends-on ("package"))
                (:file "mysql" :depends-on ("package" "util"))
                (:file "package")
