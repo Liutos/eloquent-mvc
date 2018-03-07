@@ -45,6 +45,9 @@ There are three valid values for FROM:
              (,qs (funcall 'http-let/parse-qs ,env))
              (,url-groups (getf ,env :params)))
          (let ,(mapcar #'(lambda (binding)
+                           (unless (my-getf binding :key)
+                             (setf binding
+                                   (append binding (list :key (string-downcase (symbol-name (first binding)))))))
                            (destructuring-bind (var . args) binding
                              `(,var (apply 'http-let/parse-binding ,body ,qs ,url-groups ,@args nil))))
                        bindings)
