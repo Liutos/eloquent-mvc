@@ -40,7 +40,7 @@
             (eq method :head))
         (setf code 404)
         (setf code 405))
-    (list code nil '(""))))
+    (make-http-response "" code nil)))
 
 (defun show-routes ()
   (dolist (route *routes*)
