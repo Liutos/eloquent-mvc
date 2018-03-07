@@ -16,6 +16,12 @@
     :initform nil
     :type string
     :documentation "响应内容的类型")
+   (cookies
+    :accessor cookies-of
+    :initarg :cookies
+    :initform nil
+    :type list
+    :documentation "下发到客户端的Cookie")
    (headers
     :accessor headers-of
     :initarg :headers
@@ -127,11 +133,22 @@ There are three valid values for FROM:
                  :code code
                  :body body))
 
-(defun respond-as-json (value &key (from :alist) (code 200) headers)
+(defun respond-as-json (value &key (from :alist) (code 200) cookies headers)
   (let ((resp (make-http-response value code headers)))
     (setf (content-type-of resp) "application/json")
     (setf (to-json-from-of resp) from)
+    (dolist (cookie cookies)
+      (set-cookie resp cookie))
     resp))
+
+(defun set-cookie (response cookie)
+  "因为Set-Cookie很有可能是多个一起下发的，因此不能像普通的头部那样直接覆盖同名的旧值"
+  (check-type response <http-response>)
+  (check-type cookie string)
+  (with-slots (cookies) response
+    (setf cookies
+          (append cookies
+                  (list :set-cookie cookie)))))
 
 (defun set-header (response header value)
   (check-type response <http-response>)
@@ -139,17 +156,20 @@ There are three valid values for FROM:
   (check-type value (or number string))
   (when (numberp value)
     (setf value (format nil "~A" value)))
-  (with-slots (headers) response
-    (setf (gethash header headers) value)))
+  (if (eq header :set-cookie)
+      (set-cookie response value)
+      (with-slots (headers) response
+        (setf (gethash header headers) value))))
 
 (defun unwrap (response)
   (check-type response <http-response>)
-  (with-slots (body code content-type headers)
+  (with-slots (body code content-type cookies headers)
       response
     (when (string= content-type "application/json")
       (setf body (jonathan:to-json body
                                    :from (to-json-from-of response)))
       (set-header response :content-type content-type))
     (list code
-          (alexandria:hash-table-plist headers)
+          (append (alexandria:hash-table-plist headers)
+                  cookies)
           (list body))))
