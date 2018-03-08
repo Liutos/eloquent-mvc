@@ -23,6 +23,7 @@
   :components ((:file "handler" :depends-on ("package" "router"))
                (:file "hc" :depends-on ("package"))
                (:file "http" :depends-on ("package"))
+               (:file "memoize" :depends-on ("package"))
                (:file "mysql" :depends-on ("package" "util"))
                (:file "package")
                (:file "router" :depends-on ("http" "package"))

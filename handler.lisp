@@ -1,5 +1,11 @@
 (in-package :fw)
 
+(annot:defannotation handle/get (path f)
+    (:arity 2)
+  `(progn
+     ,f
+     (add-route :get ,path ',(second f))))
+
 (annot:defannotation handle/post (path f)
     (:arity 2)
   `(progn
