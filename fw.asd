@@ -9,6 +9,7 @@
   :author "Liutos <mat.liutos@gmail.com>"
   :license "MIT"
   :depends-on (:alexandria
+               :cl-annot
                :cl-ppcre
                :closer-mop
                :clack

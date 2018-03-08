@@ -1,5 +1,11 @@
 (in-package :fw)
 
+(annot:defannotation handle/post (path f)
+    (:arity 2)
+  `(progn
+     ,f
+     (add-route :post ,path ',(second f))))
+
 (defmacro define-request-handler ((name
                                    &key for when
                                    &aux (method when) (path for)) args &body body)
