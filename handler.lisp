@@ -6,6 +6,13 @@
      ,f
      (add-route :post ,path ',(second f))))
 
+(annot:defannotation handler (method path f)
+    (:arity 3)
+  (let ((name (second f)))
+    `(progn
+       ,f
+       (add-route ,method ,path ',name))))
+
 (defmacro define-request-handler ((name
                                    &key for when
                                    &aux (method when) (path for)) args &body body)
