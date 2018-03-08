@@ -1,5 +1,12 @@
 (in-package :fw)
 
+(defclass <simple-to-json> ()
+  ()
+  (:documentation "用于简化对JONATHAN:%TO-JSON方法的特化逻辑的编写"))
+
+(defmethod jonathan:%to-json ((obj <simple-to-json>))
+  (simple-to-json obj))
+
 (defun camel-case-formatter (name)
   (let ((i 0)
         (length (length name))
