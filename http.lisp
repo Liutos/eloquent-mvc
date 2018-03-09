@@ -162,14 +162,18 @@ There are three valid values for FROM:
         (setf (gethash header headers) value))))
 
 (defun unwrap (response)
+  "将一个<HTTP-RESPONSE>对象还原为CLACK可以理解的格式的对象"
   (check-type response <http-response>)
   (with-slots (body code content-type cookies headers)
       response
-    (when (string= content-type "application/json")
-      (setf body (jonathan:to-json body
-                                   :from (to-json-from-of response)))
-      (set-header response :content-type content-type))
-    (list code
-          (append (alexandria:hash-table-plist headers)
-                  cookies)
-          (list body))))
+    (let ((final-body body)
+          (override-headers '()))
+      (when (string= content-type "application/json")
+        (setf final-body (jonathan:to-json body
+                                           :from (to-json-from-of response)))
+        (alexandria:appendf override-headers (list :content-type content-type)))
+      (list code
+            (append (override-plist (alexandria:hash-table-plist headers)
+                                    override-headers)
+                    cookies)
+            (list final-body)))))

@@ -48,3 +48,9 @@
     (if (numberp i)
         (nth (1+ i) place)
         default)))
+
+(defun override-plist (p1 p2)
+  (let ((new-p1 (copy-list p1)))
+    (alexandria:doplist (k v p2)
+      (setf (getf new-p1 k) v))
+    new-p1))
