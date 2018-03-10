@@ -10,3 +10,11 @@
     (ironclad:update-hmac hmac bytes)
     (let ((digest (ironclad:hmac-digest hmac)))
       (string-downcase (format nil "~{~2,'0X~}" (coerce digest 'list))))))
+
+(defun easy-sha1 (text)
+  "简化IRONCLAD提供的计算SHA1的函数的使用"
+  (let ((bytes (flexi-streams:string-to-octets text))
+        (digester (ironclad:make-digest :sha1)))
+    (ironclad:update-digest digester bytes)
+    (let ((digest (ironclad:produce-digest digester)))
+      (string-downcase (format nil "~{~2,'0X~}" (coerce digest 'list))))))
