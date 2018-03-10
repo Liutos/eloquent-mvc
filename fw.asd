@@ -18,9 +18,11 @@
                :flexi-streams
                :http-body
                :jonathan
+               :ironclad
                :local-time
                :split-sequence)
-  :components ((:file "handler" :depends-on ("package" "router"))
+  :components ((:file "digest" :depends-on ("package"))
+               (:file "handler" :depends-on ("package" "router"))
                (:file "hc" :depends-on ("package"))
                (:file "http" :depends-on ("package"))
                (:file "memoize" :depends-on ("package" "util"))
