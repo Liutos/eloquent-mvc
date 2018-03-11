@@ -30,6 +30,10 @@
          ,slots
          ,@options))))
 
+(defun alist-keys (alist)
+  "提取出ALIST中的所有元素的CAR部分"
+  (mapcar #'car alist))
+
 (defun assoc-string (item alist &key key (after #'cdr))
   (let ((c (assoc item alist :key key :test #'string=)))
     (if (or (null c) (null after))
@@ -42,6 +46,25 @@
          (nsec-part (local-time:nsec-of now)))
     (+ (* 1000 unix-part)
        (truncate nsec-part 1000000))))
+
+(defun ksort (alist)
+  "模仿PHP的ksort函数"
+  (sort alist
+        #'string<
+        :key #'car))
+
+(defun make-query-string (alist &key keys)
+  "根据ALIST构造出query string"
+  (apply
+   #'str:join
+   "&"
+   (list (mapcar #'(lambda (kv)
+                     (destructuring-bind (k . v) kv
+                       (str:join "=" (list k v))))
+                 (remove-if #'(lambda (kv)
+                                (and keys
+                                     (null (position (first kv) keys :test #'string=))))
+                            alist)))))
 
 (defun my-getf (place indicator &optional default)
   (let ((i (position indicator place)))
