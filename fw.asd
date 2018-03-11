@@ -20,7 +20,8 @@
                :jonathan
                :ironclad
                :local-time
-               :split-sequence)
+               :split-sequence
+               :str)
   :components ((:file "digest" :depends-on ("package"))
                (:file "handler" :depends-on ("package" "router"))
                (:file "hc" :depends-on ("package"))
