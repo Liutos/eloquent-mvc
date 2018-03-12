@@ -32,4 +32,5 @@
                (:file "router" :depends-on ("http" "package"))
                (:file "serde" :depends-on ("package"))
                (:file "server" :depends-on ("http" "package" "router"))
+               (:file "tencent-cos" :depends-on ("digest" "package" "util"))
                (:file "util" :depends-on ("package"))))
