@@ -45,9 +45,10 @@ There are three valid values for FROM:
 1. :BODY. It means the KEY should be searched within HTTP body. The raw HTTP body will be parsed by PARSER. A default parser based on HTTP-BODY:PARSE is provided;
 2. :QS. It means the KEY should be searched within query string;
 3. :URL. It means the KEY should be searched within URL. The KEY used as index for getting one of the matching groups."
-  (alexandria:with-gensyms (body qs url-groups)
+  (alexandria:with-gensyms (body content-type qs url-groups)
     (alexandria:once-only (env)
-      `(let ((,body (funcall 'http-let/parse-body ,env ',parser))
+      `(let ((,content-type (content-type-of ,env))
+             (,body (funcall 'http-let/parse-body ,env ',parser))
              (,qs (funcall 'http-let/parse-qs ,env))
              (,url-groups (getf ,env :params)))
          (let ,(mapcar #'(lambda (binding)
@@ -55,7 +56,7 @@ There are three valid values for FROM:
                              (setf binding
                                    (append binding (list :key (string-downcase (symbol-name (first binding)))))))
                            (destructuring-bind (var . args) binding
-                             `(,var (apply 'http-let/parse-binding ,body ,qs ,url-groups ,@args nil))))
+                             `(,var (apply 'http-let/parse-binding ,body ,qs ,url-groups ,@args :content-type ,content-type nil))))
                        bindings)
            ,@forms)))))
 
@@ -87,7 +88,7 @@ There are three valid values for FROM:
   (let ((headers (headers-of env)))
     (gethash (string-downcase name) headers)))
 
-(defun http-let/parse-binding (body qs url-params &rest args &key default from key (trimp t) type)
+(defun http-let/parse-binding (body qs url-params &rest args &key content-type default from key (trimp t) type)
   (declare (ignorable key))
   (flet ((get-from-body (&key key)
            (assoc-string key body))
@@ -100,6 +101,9 @@ There are three valid values for FROM:
                     (:qs #'get-from-qs)
                     (:url #'get-from-url))))
       (let ((result (apply getter :allow-other-keys t args)))
+        (when (is-multipart-p content-type)
+          (setf result (first result)))
+
         (when (and (null result) default)
           (setf result default))
         (when (and trimp (stringp result))
@@ -126,6 +130,9 @@ There are three valid values for FROM:
                       (split-sequence:split-sequence #\= pair)
                     (cons k v)))
               pairs))))
+
+(defun is-multipart-p (content-type)
+  (alexandria:starts-with-subseq "multipart/form-data" content-type))
 
 (defun make-http-response (body code headers)
   (make-instance '<http-response>
