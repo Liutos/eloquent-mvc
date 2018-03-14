@@ -40,6 +40,18 @@
         c
         (funcall after c))))
 
+(defun octets-from-vector-stream (s &key (external-format :utf-8))
+  "用于从经过HTTP-BODY:PARSE解析的multipart/form-data数据中提取出字节内容"
+  (check-type s flexi-streams:vector-stream)
+  (let* ((size (* 1024 1024))
+         (buffer (make-array size :element-type '(unsigned-byte 8)))
+         (count (read-sequence buffer s)))
+    (setf buffer (subseq buffer 0 count))
+    (cond ((null external-format)
+           buffer)
+          (t (flexi-streams:octets-to-string buffer
+                                             :external-format external-format)))))
+
 (defun get-current-ts ()
   (let* ((now (local-time:now))
          (unix-part (local-time:timestamp-to-unix now))
