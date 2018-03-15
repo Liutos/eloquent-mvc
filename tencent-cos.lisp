@@ -77,6 +77,32 @@ EXPIRE-FROM为签名开始生效的时间，为秒级的UNIX时间戳。默认�
          http-string-sha1
          "")))
 
+(defun put-object (cos-client bucket region path payload)
+  "将PAYLOAD中的数据以PATH为名存储到腾讯云对象存储的BUCKET位置下"
+  (check-type cos-client <cos-client>)
+  (check-type bucket string)
+  (check-type region string)
+  (check-type path string)
+  (check-type payload (or string (vector (unsigned-byte 8))))
+
+  (when (stringp payload)
+    (setf payload (flexi-streams:string-to-octets payload)))
+
+  (let* ((host (format nil "~A.cos.~A.myqcloud.com" bucket region))
+         (uri (format nil "https://~A~A" host path))
+         (method :put)
+         (authorization
+          (make-authorization cos-client
+                              method
+                              path
+                              `(("host" . ,host))
+                              '())))
+    (fw::http-request
+     uri
+     :additional-headers `(("Authorization" . ,authorization))
+     :content payload
+     :method method)))
+
 (defun test/make-authorization ()
   (let* ((cos-client (make-cos-client
                       "1254000000"
