@@ -101,7 +101,8 @@ EXPIRE-FROM为签名开始生效的时间，为秒级的UNIX时间戳。默认�
      uri
      :additional-headers `(("Authorization" . ,authorization))
      :content payload
-     :method method)))
+     :method method)
+    uri))
 
 (defun test/make-authorization ()
   (let* ((cos-client (make-cos-client
