@@ -17,14 +17,8 @@
 
 (defun make-element-as-instance (class columns row)
   "根据从数据库中返回的列尝试构造一个实例对象"
-  (let ((args (make-plist columns row)))
-    (apply 'make-instance class `(,@args :allow-other-keys t))))
-
-(defun make-plist (columns values)
-  (mapcan #'(lambda (column value)
-              (list (table-field-to-key column)
-                    value))
-          columns values))
+  (fw::my-make-instance class columns row
+                        :slot-name-convertor 'table-field-to-key))
 
 (defun sql-select (&rest args)
   "封装CLSQL:SELECT"

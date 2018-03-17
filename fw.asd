@@ -27,7 +27,7 @@
                (:file "hc" :depends-on ("package"))
                (:file "http" :depends-on ("package"))
                (:file "memoize" :depends-on ("package" "util"))
-               (:file "mysql" :depends-on ("package" "util"))
+               (:file "mysql" :depends-on ("package" "serde" "util"))
                (:file "package")
                (:file "router" :depends-on ("http" "package"))
                (:file "serde" :depends-on ("package"))

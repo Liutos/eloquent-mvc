@@ -1,5 +1,7 @@
 (in-package :fw)
 
+(defparameter *default-slot-name-convertor* 'simple/convert-slot-name)
+
 (defclass <simple-to-json> ()
   ()
   (:documentation "用于简化对JONATHAN:%TO-JSON方法的特化逻辑的编写"))
@@ -25,6 +27,21 @@
                 (push (char-downcase c) result)
                 (incf i)))))
     (concatenate 'string (nreverse result))))
+
+(defun my-make-instance (class initial-keys initial-values &key (slot-name-convertor *default-slot-name-convertor*))
+  "生成一个CLASS类的实例对象并按照INITIAL-CONTENTS填充它"
+  (check-type class symbol)
+  (check-type initial-keys list)
+  (check-type initial-values list)
+  (let ((initargs
+         (mapcan #'(lambda (key value)
+                     (list (funcall slot-name-convertor key) value))
+                 initial-keys initial-values)))
+    (format t "~S~%" initargs)
+    (apply #'make-instance class `(,@initargs :allow-other-keys t))))
+
+(defun simple/convert-slot-name (string)
+  (intern (string-upcase string) :keyword))
 
 (defun simple-to-json (obj
                        &key
