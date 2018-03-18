@@ -77,6 +77,27 @@ EXPIRE-FROM为签名开始生效的时间，为秒级的UNIX时间戳。默认�
          http-string-sha1
          "")))
 
+(defun delete-object (cos-client bucket region path)
+  "删除位于指定REGION的指定BUCKET下指定路径PATH的对象"
+  (check-type cos-client <cos-client>)
+  (check-type bucket string)
+  (check-type region string)
+  (check-type path string)
+
+  (let* ((host (format nil "~A.cos.~A.myqcloud.com" bucket region))
+         (uri (format nil "https://~A~A" host path))
+         (method :delete)
+         (authorization
+          (make-authorization cos-client
+                              method
+                              path
+                              `(("host" . ,host))
+                              '())))
+    (fw::http-request
+     uri
+     :additional-headers `(("Authorization" . ,authorization))
+     :method method)))
+
 (defun put-object (cos-client bucket region path payload)
   "将PAYLOAD中的数据以PATH为名存储到腾讯云对象存储的BUCKET位置下"
   (check-type cos-client <cos-client>)
