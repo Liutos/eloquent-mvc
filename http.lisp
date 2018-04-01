@@ -1,5 +1,7 @@
 (in-package :fw)
 
+(defparameter *default-fail-at/must-in* 'fail-at/must-in)
+
 (defclass <http-response> ()
   ((body
     :accessor body-of
@@ -34,6 +36,18 @@
     :type keyword
     :documentation "序列化为JSON字符串时来源数据的格式"))
   (:documentation "HTTP响应"))
+
+(define-condition <http-var-fail> ()
+  ((must-in
+    :initarg :must-in
+    :reader must-in-of)
+   (result
+    :initarg :result
+    :reader result-of))
+  (:report (lambda (c stream)
+             (format stream "~A不是有效值，必须为~{~A~^, ~}之一"
+                     (result-of c)
+                     (must-in-of c)))))
 
 (defmacro http-let (bindings (env &key (parser 'http-body:parse)) &body forms)
   "HTTP-LET ({(var &key default from key type)| var}*) (env &key parser) forms
@@ -88,6 +102,9 @@ There are three valid values for FROM:
   (let ((headers (headers-of env)))
     (gethash (string-downcase name) headers)))
 
+(defun fail-at/must-in (must-in result)
+  (error '<http-var-fail> :must-in must-in :result result))
+
 (defun http-let/parse-binding (body qs url-params &rest args &key content-type default from key must-in (trimp t) type)
   (declare (ignorable key))
   (flet ((get-from-body (&key key)
@@ -114,7 +131,8 @@ There are three valid values for FROM:
         (when (and (consp must-in)
                    (not (member result must-in :test #'equal)))
           (format t "must-in: ~S~%" must-in)
-          (error "~A不是有效值，必须为~{~A~^, ~}之一" result must-in))
+          (funcall *default-fail-at/must-in* must-in result))
+
         result))))
 
 (defun http-let/parse-body (env parser)
