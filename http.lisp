@@ -88,7 +88,7 @@ There are three valid values for FROM:
   (let ((headers (headers-of env)))
     (gethash (string-downcase name) headers)))
 
-(defun http-let/parse-binding (body qs url-params &rest args &key content-type default from key (trimp t) type)
+(defun http-let/parse-binding (body qs url-params &rest args &key content-type default from key must-in (trimp t) type)
   (declare (ignorable key))
   (flet ((get-from-body (&key key)
            (assoc-string key body))
@@ -111,6 +111,10 @@ There are three valid values for FROM:
         (when (and (eq type :integer)
                    (stringp result))
           (setf result (parse-integer result)))
+        (when (and (consp must-in)
+                   (not (member result must-in :test #'equal)))
+          (format t "must-in: ~S~%" must-in)
+          (error "~A不是有效值，必须为~{~A~^, ~}之一" result must-in))
         result))))
 
 (defun http-let/parse-body (env parser)
