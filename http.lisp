@@ -1,6 +1,7 @@
 (in-package :fw)
 
 (defparameter *default-fail-at/must-in* 'fail-at/must-in)
+(defparameter *default-fail-at/type* 'fail-at/type)
 
 (defclass <http-response> ()
   ((body
@@ -38,6 +39,9 @@
   (:documentation "HTTP响应"))
 
 (define-condition <http-var-fail> ()
+  ())
+
+(define-condition <http-var-fail/must-in> (<http-var-fail>)
   ((must-in
     :initarg :must-in
     :reader must-in-of)
@@ -48,6 +52,14 @@
              (format stream "~A不是有效值，必须为~{~A~^, ~}之一"
                      (result-of c)
                      (must-in-of c)))))
+
+(define-condition <http-var-fail/type> (<http-var-fail>)
+  ((result
+    :initarg :result
+    :reader result-of))
+  (:report (lambda (c stream)
+             (format stream "~A不是有效的整数字符串"
+                     (result-of c)))))
 
 (defmacro http-let (bindings (env &key (parser 'http-body:parse)) &body forms)
   "HTTP-LET ({(var &key default from key type)| var}*) (env &key parser) forms
@@ -103,7 +115,9 @@ There are three valid values for FROM:
     (gethash (string-downcase name) headers)))
 
 (defun fail-at/must-in (must-in result)
-  (error '<http-var-fail> :must-in must-in :result result))
+  (error '<http-var-fail/must-in> :must-in must-in :result result))
+(defun fail-at/type (result)
+  (error '<http-var-fail/type> :result result))
 
 (defun http-let/parse-binding (body qs url-params &rest args &key content-type default from key must-in (trimp t) type)
   (declare (ignorable key))
@@ -127,7 +141,12 @@ There are three valid values for FROM:
           (setf result (string-trim '(#\Newline #\Space) result)))
         (when (and (eq type :integer)
                    (stringp result))
-          (setf result (parse-integer result)))
+          (handler-case
+              (setf result (parse-integer result))
+            (error (e)
+              (declare (ignorable e))
+              (funcall *default-fail-at/type* result))))
+
         (when (and (consp must-in)
                    (not (member result must-in :test #'equal)))
           (format t "must-in: ~S~%" must-in)
