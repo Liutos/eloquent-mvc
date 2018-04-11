@@ -9,25 +9,6 @@
 (defmethod jonathan:%to-json ((obj <simple-to-json>))
   (simple-to-json obj))
 
-(defun camel-case-formatter (name)
-  (let ((i 0)
-        (length (length name))
-        (result '()))
-    (loop
-       (when (>= i length)
-         (return))
-       (let ((c (char name i)))
-         (cond ((or (char= c #\-) (char= c #\_))
-                (when (< i (1- length))
-                  (incf i)
-                  (let ((nc (char name i)))
-                    (push (char-upcase nc) result)))
-                (incf i))
-               (t
-                (push (char-downcase c) result)
-                (incf i)))))
-    (concatenate 'string (nreverse result))))
-
 (defun my-make-instance (class initial-keys initial-values &key (slot-name-convertor *default-slot-name-convertor*))
   "生成一个CLASS类的实例对象并按照INITIAL-CONTENTS填充它"
   (check-type class symbol)
@@ -46,8 +27,11 @@
 (defun simple-to-json (obj
                        &key
                          (allow-keys nil)
-                         (key-formatter 'camel-case-formatter)
+                         (key-formatter 'cl-change-case:camel-case)
                          (null-value :null))
+  "将一个实例对象OBJ的每一个槽以JSON对象的方式序列化"
+  (check-type allow-keys list)
+  (check-type key-formatter (or function symbol))
   (let* ((clz (class-of obj))
          (slots (closer-mop:class-direct-slots clz))
          (names (mapcar #'(lambda (slot)
