@@ -10,6 +10,8 @@
   :license "MIT"
   :depends-on (:alexandria
                :cl-annot
+               :cl-arrows
+               :cl-change-case
                :cl-ppcre
                :closer-mop
                :clack

@@ -37,15 +37,9 @@
         (if singlep (first rows) rows)))))
 
 (defun table-field-to-key (field)
-  (let ((chars '()))
-    (dotimes (i (length field))
-      (let ((c (char field i)))
-        (cond ((upper-case-p c)
-               (when (not (char= (first chars) #\-))
-                 (push #\- chars))
-               (push c chars))
-              ((char= c #\_)
-               (when (not (char= (first chars) #\-))
-                 (push #\- chars)))
-              (t (push (char-upcase c) chars)))))
-    (intern (concatenate 'string (nreverse chars)) :keyword)))
+  "将数据库表的列名转换为更具lisp风格的关键字符号"
+  (check-type field string)
+  (cl-arrows:-> field
+                cl-change-case:param-case
+                string-upcase
+                (intern :keyword)))
