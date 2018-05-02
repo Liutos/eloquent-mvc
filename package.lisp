@@ -1,4 +1,5 @@
 (in-package :cl-user)
 
 (defpackage fw
-  (:use :cl))
+  (:use :cl)
+  (:export #:connect-to-mysql))

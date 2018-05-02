@@ -1,5 +1,10 @@
 (in-package :fw)
 
+(defun connect-to-mysql (&key database host password port user)
+  (declare (ignorable port))
+  (clsql:connect (list host database user password))
+  (clsql:query "SET NAMES utf8"))
+
 (defun make-element (row columns element-type
                      &key (null-value nil))
   (cond ((eq element-type :alist)
