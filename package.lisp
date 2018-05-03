@@ -2,4 +2,5 @@
 
 (defpackage fw
   (:use :cl)
-  (:export #:connect-to-mysql))
+  (:export #:connect-to-mysql
+           #:make-snowflake-id))

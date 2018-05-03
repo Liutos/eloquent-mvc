@@ -19,6 +19,7 @@
                :drakma
                :flexi-streams
                :http-body
+               :ip-interfaces
                :jonathan
                :ironclad
                :local-time
@@ -28,6 +29,7 @@
                (:file "handler" :depends-on ("package" "router"))
                (:file "hc" :depends-on ("package"))
                (:file "http" :depends-on ("package"))
+               (:file "id" :depends-on ("ip" "package" "util"))
                (:file "ip" :depends-on ("package"))
                (:file "memoize" :depends-on ("package" "util"))
                (:file "mysql" :depends-on ("package" "serde" "util"))
