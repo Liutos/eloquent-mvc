@@ -2,7 +2,8 @@
 
 (defun connect-to-mysql (&key database host password port user)
   (declare (ignorable port))
-  (clsql:connect (list host database user password))
+  (clsql:connect (list host database user password)
+                 :database-type :mysql)
   (clsql:query "SET NAMES utf8"))
 
 (defun make-element (row columns element-type
